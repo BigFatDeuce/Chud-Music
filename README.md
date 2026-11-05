@@ -1,119 +1,124 @@
 <div align="center">
 
-<img src="images/logo.svg" width="112" alt="Logo de Chud Music">
+<img src="images/logo.svg" width="112" alt="Chud Music logo">
 
 # Chud Music
 
-**Le lecteur musical de bureau, moderne et rétro.**
-Vos fichiers, YouTube Music, la radio du monde entier et les paroles synchronisées, dans une seule application.
+**The desktop music player, modern and retro.**
+Your files, YouTube Music, radio from all over the world and synced lyrics, in one app.
 
-[![Dernière version](https://img.shields.io/github/v/release/BigFatDeuce/Chud-Music?label=version&color=c6ff2e&labelColor=101216)](https://github.com/BigFatDeuce/Chud-Music/releases/latest)
-[![Téléchargements](https://img.shields.io/github/downloads/BigFatDeuce/Chud-Music/total?label=t%C3%A9l%C3%A9chargements&color=3fd8ff&labelColor=101216)](https://github.com/BigFatDeuce/Chud-Music/releases)
+[![Latest release](https://img.shields.io/github/v/release/BigFatDeuce/Chud-Music?label=release&color=c6ff2e&labelColor=101216)](https://github.com/BigFatDeuce/Chud-Music/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/BigFatDeuce/Chud-Music/total?label=downloads&color=3fd8ff&labelColor=101216)](https://github.com/BigFatDeuce/Chud-Music/releases)
 ![Windows](https://img.shields.io/badge/Windows-10%20%7C%2011-1c5bcc?labelColor=101216)
 ![Linux](https://img.shields.io/badge/Linux-AppImage-ffb21f?labelColor=101216)
 
-[**Télécharger**](#télécharger) · [Fonctionnalités](#fonctionnalités) · [Skins](#cinq-skins) · [Installation](#installation) · [Vie privée](#vie-privée)
+[**Download**](#download) · [Features](#features) · [Skins](#five-skins) · [Installation](#installation) · [Privacy](#privacy)
 
-<img src="images/accueil.png" alt="Chud Music : page d'accueil avec le morceau en cours" width="900">
+<img src="images/home.png" alt="Chud Music: home page with the track playing" width="900">
 
 </div>
 
-## Télécharger
+> **Language:** the app's interface is in French for now.
 
-| Système | Fichier | |
+## Download
+
+| System | File | |
 |---|---|---|
-| **Windows** 10 et 11 (64 bits) | `Chud-Music-Setup-x.y.z.exe` | [Dernière version](https://github.com/BigFatDeuce/Chud-Music/releases/latest) |
-| **Linux** x86_64 (AppImage) | `Chud-Music-x.y.z-x86_64.AppImage` | [Dernière version](https://github.com/BigFatDeuce/Chud-Music/releases/latest) |
+| **Windows** 10 and 11 (64-bit) | `Chud-Music-Setup-x.y.z.exe` | [Latest release](https://github.com/BigFatDeuce/Chud-Music/releases/latest) |
+| **Linux** x86_64 (AppImage) | `Chud-Music-x.y.z-x86_64.AppImage` | [Latest release](https://github.com/BigFatDeuce/Chud-Music/releases/latest) |
 
-Gratuit, sans compte, sans publicité. Chaque installation est indépendante : aucune clé, aucun identifiant ni réglage personnel n'est fourni avec l'application.
+Free, no account, no ads. Every installation is independent: no key, no credential and no personal setting ships with the app.
 
-## Fonctionnalités
+## Features
 
-### Votre musique, tous les formats
-- **Bibliothèque** : ajoutez vos dossiers (sous-dossiers compris), Chud Music lit les tags et les pochettes et suit les nouveaux fichiers. Vue par titres, albums ou artistes, recherche instantanée, même avec des milliers de morceaux.
-- **Tous les formats courants** : MP3, FLAC, AAC/M4A, Ogg, Opus, WAV… et aussi ALAC, WMA, AIFF, WavPack, AC3 ou TTA, convertis à la volée par FFmpeg (fourni).
-- **Double-clic dans l'Explorateur** : le fichier s'ouvre dans l'onglet *Fichiers ouverts* de la fenêtre déjà lancée, les suivants s'y ajoutent.
-- **Onglets, playlists et file d'attente** : glisser-déposer partout, réorganisation à la souris, le même morceau peut figurer deux fois dans une playlist.
-- **Vos fichiers ne sont jamais modifiés ni supprimés.** Retirer un morceau de la bibliothèque ne touche pas au disque.
+### Your music, every format
+- **Library**: add your folders (subfolders included). Chud Music reads tags and covers and picks up new files. Browse by tracks, albums or artists, with instant search, even across thousands of tracks.
+- **All common formats**: MP3, FLAC, AAC/M4A, Ogg, Opus, WAV… plus ALAC, WMA, AIFF, WavPack, AC3 or TTA, converted on the fly by FFmpeg (included).
+- **Double-click in your file manager**: the file opens in the *Opened files* tab of the running window, and the next ones join it.
+- **Tabs, playlists and queue**: drag and drop everywhere, reorder with the mouse, the same track can appear twice in a playlist.
+- **Your files are never modified or deleted.** Removing a track from the library does not touch the disk.
 
-<img src="images/bibliotheque.png" alt="La bibliothèque : titres, artistes, albums, formats" width="900">
+<img src="images/library.png" alt="The library: titles, artists, albums, formats" width="900">
 
-### YouTube Music, sans compte
-Recherchez des titres, albums et artistes, lancez un mix : la lecture passe par le **lecteur officiel de YouTube**, affiché dans l'application. Aucune connexion Google, aucun téléchargement, aucune extraction de flux. Un bloqueur de publicités (listes de filtres d'uBlock Origin, mises à jour automatiquement) peut être activé ou désactivé dans les paramètres.
+### YouTube Music, no account
+Search tracks, albums and artists, start a mix: playback goes through **YouTube's official player**, shown inside the app. No Google sign-in, no download, no stream extraction. An ad blocker (uBlock Origin filter lists, updated automatically) can be turned on or off in the settings.
 
-### Radio du monde entier
-Des dizaines de milliers de radios par pays, les plus écoutées d'abord, grâce à l'annuaire libre [Radio Browser](https://www.radio-browser.info). Recherche, favoris en tête de liste, titre en cours affiché quand la station le diffuse.
+When the window is narrow, the YouTube player moves into the player bar: the controls stay exactly where they are, and above them you get the **synced lyrics** or, when there are none, the **track card** (artist, album, your listening history, and links to learn more about the artist on YouTube Music, Wikipedia, Grokipedia, Last.fm and Discogs).
 
-<img src="images/radio.png" alt="La radio : pays, stations et favoris" width="900">
+### Radio from all over the world
+Tens of thousands of stations by country, most listened first, thanks to the open directory [Radio Browser](https://www.radio-browser.info). Search, favorites on top, and the title on air when the station broadcasts it.
 
-### Paroles synchronisées
-Les paroles du morceau en cours, synchronisées ligne par ligne quand elles existent, grâce à [LRCLIB](https://lrclib.net). Sinon, l'application l'indique clairement et propose une recherche manuelle.
+<img src="images/radio.png" alt="Radio: countries, stations and favorites" width="900">
 
-### Visualiseur MilkDrop
-Des centaines de presets MilkDrop (butterchurn) qui réagissent à la musique, en plein écran si vous voulez, avec enchaînement automatique.
+### Synced lyrics
+The lyrics of the track playing, synced line by line when available, thanks to [LRCLIB](https://lrclib.net). Otherwise the app says so and lets you search by hand.
 
-<img src="images/visualiseur.png" alt="Le visualiseur MilkDrop" width="900">
+### MilkDrop visualizer
+Hundreds of MilkDrop presets (butterchurn) reacting to the music, full screen if you like, with automatic cycling.
 
-### Et aussi
-- **Égaliseur 10 bandes** avec préampli, préréglages (Rock, Pop, Jazz, Voix…) et vos propres réglages.
-- **Statistiques d'écoute** : temps d'écoute, séries, heures et jours préférés, tops titres, artistes et albums, sources.
-- **Mini lecteur** toujours au premier plan, pochette et commandes seulement.
-- **Touches multimédias** du clavier (lecture, suivant, précédent) et boutons dans la miniature de la barre des tâches Windows.
-- **Choix de la sortie audio** (casque, enceintes, interface audio) dans les paramètres ou d'un clic droit sur le volume.
-- **Taille de l'interface** réglable, mise en page qui s'adapte aux fenêtres étroites et aux écrans verticaux.
-- **Mises à jour** : l'application signale les nouvelles versions publiées ici (vérification désactivable).
+<img src="images/visualizer.png" alt="The MilkDrop visualizer" width="900">
+
+### And also
+- **10-band equalizer** with preamp, presets (Rock, Pop, Jazz, Vocals…) and your own settings.
+- **Listening statistics**: listening time, streaks, favorite hours and days, top tracks, artists and albums, sources.
+- **Mini player**, always on top, cover and controls only.
+- **Media keys** (play, next, previous) and buttons in the Windows taskbar thumbnail.
+- **Audio output choice** (headphones, speakers, audio interface) in the settings or with a right-click on the volume.
+- **Adjustable interface size**, and a layout that adapts to narrow windows and portrait screens.
+- **Updates**: the app tells you when a new version is published here (the check can be turned off).
 
 <p align="center">
-  <img src="images/egaliseur.png" alt="L'égaliseur 10 bandes" width="640">
-  <img src="images/mini.png" alt="Le mini lecteur" width="200">
+  <img src="images/equalizer.png" alt="The 10-band equalizer" width="640">
+  <img src="images/mini-player.png" alt="The mini player" width="200">
 </p>
 
-## Cinq skins
+## Five skins
 
-*Chud Nocturne* (sombre, vert LCD, ci-dessus), *Cassette 98* (plastique biseauté, années 90), *Aqua Glow* (verre bleu nuit, années 2000), *Platine* (gris clair, le plus lisible) et *Signal* (graphite, glitchs de vieux moniteur, ASCII et tramage). Couleur d'accent au choix et trois niveaux d'effets : complets, réduits ou désactivés.
+*Chud Nocturne* (dark, LCD green, above), *Cassette 98* (bevelled plastic, the '90s), *Aqua Glow* (midnight-blue glass, the 2000s), *Platine* (light grey, the most readable) and *Signal* (graphite, old-monitor glitches, ASCII and dithering). Accent color of your choice, and three effect levels: full, reduced or off.
 
 | Cassette 98 | Aqua Glow |
 |---|---|
-| <img src="images/skin-cassette.png" alt="Skin Cassette 98"> | <img src="images/skin-aqua.png" alt="Skin Aqua Glow"> |
+| <img src="images/skin-cassette.png" alt="Cassette 98 skin"> | <img src="images/skin-aqua.png" alt="Aqua Glow skin"> |
 | **Platine** | **Signal** |
-| <img src="images/skin-platine.png" alt="Skin Platine"> | <img src="images/skin-signal.png" alt="Skin Signal"> |
+| <img src="images/skin-platine.png" alt="Platine skin"> | <img src="images/skin-signal.png" alt="Signal skin"> |
 
 ## Installation
 
 ### Windows
-1. Téléchargez `Chud-Music-Setup-x.y.z.exe` depuis la [dernière version](https://github.com/BigFatDeuce/Chud-Music/releases/latest) et lancez-le.
-2. L'installeur n'est pas signé numériquement : Windows SmartScreen peut afficher « Windows a protégé votre ordinateur ». Cliquez sur **Informations complémentaires**, puis **Exécuter quand même**.
-3. Choisissez le dossier d'installation. Aucun droit administrateur n'est nécessaire par défaut.
+1. Download `Chud-Music-Setup-x.y.z.exe` from the [latest release](https://github.com/BigFatDeuce/Chud-Music/releases/latest) and run it.
+2. The installer is not code-signed: Windows SmartScreen may show "Windows protected your PC". Click **More info**, then **Run anyway**.
+3. Choose the installation folder. No administrator rights are needed by default.
 
-Les mises à jour se font ensuite depuis l'application, en un clic. Vos données sont conservées.
+Updates then happen from inside the app, in one click. Your data is kept.
 
 ### Linux (AppImage)
 ```bash
 chmod +x Chud-Music-*-x86_64.AppImage
 ./Chud-Music-*-x86_64.AppImage
 ```
-Testé sur Fedora 45. Les AppImage ont besoin de FUSE 2, déjà présent sur la plupart des distributions ; sur Ubuntu 24.04 : `sudo apt install libfuse2t64` (22.04 : `libfuse2`).
+Tested on Fedora 45. AppImages need FUSE 2, already present on most distributions; on Ubuntu 24.04: `sudo apt install libfuse2t64` (22.04: `libfuse2`).
 
-## Vie privée
+## Privacy
 
-- **Pas de compte, pas de télémétrie, pas de statistiques envoyées.** Votre bibliothèque, vos playlists, vos réglages et vos statistiques d'écoute restent sur votre ordinateur.
-- Chud Music ne contacte Internet que pour ce que vous utilisez :
-  YouTube (recherche et lecteur officiel, quand vous ouvrez YouTube Music),
-  Radio Browser (liste des radios) et la station choisie,
-  LRCLIB (paroles),
-  les listes de filtres d'uBlock Origin (si le bloqueur est activé),
-  GitHub (vérification des mises à jour, désactivable).
-- Données de l'application : `%APPDATA%\Chud Music` sous Windows, `~/.config/Chud Music` sous Linux. Une sauvegarde de la base est faite avant chaque mise à jour de son format.
+- **No account, no telemetry, no statistics sent anywhere.** Your library, playlists, settings and listening statistics stay on your computer.
+- Chud Music only goes online for what you use:
+  YouTube (search and official player, when you open YouTube Music),
+  Radio Browser (station list) and the station you pick,
+  LRCLIB (lyrics),
+  uBlock Origin filter lists (if the ad blocker is on),
+  GitHub (update check, can be turned off).
+- To animate its little spectrum while YouTube plays, the app measures the sound levels of the official player; playback is not changed and nothing is recorded.
+- App data: `%APPDATA%\Chud Music` on Windows, `~/.config/Chud Music` on Linux. The database is backed up before every change of its format.
 
-## Licences et crédits
+## Licenses and credits
 
-Chud Music s'appuie sur des logiciels libres, livrés avec leurs licences (fichier `THIRD-PARTY-NOTICES.txt` dans le dossier de l'application) :
+Chud Music is built on open-source software, shipped with their licenses (`THIRD-PARTY-NOTICES.txt` in the app folder):
 
-- [FFmpeg](https://ffmpeg.org) (LGPL 2.1 ou ultérieure), compilé sans bibliothèque externe, programme séparé et remplaçable. Ses sources exactes sont jointes à chaque version publiée.
-- [Electron](https://www.electronjs.org) et Chromium, [React](https://react.dev), [Motion](https://motion.dev), [Lucide](https://lucide.dev), [three.js](https://threejs.org).
-- [butterchurn](https://github.com/jberg/butterchurn) et ses presets MilkDrop, [music-metadata](https://github.com/Borewit/music-metadata), [YouTube.js](https://github.com/LuanRT/YouTube.js), [Ghostery adblocker](https://github.com/ghostery/adblocker) (MPL 2.0) avec les listes de [uBlock Origin](https://github.com/uBlockOrigin/uAssets) (GPL v3, téléchargées par l'application).
-- Effets de [Canvas UI](https://canvasui.com) (MIT + Commons Clause).
-- Polices Inter, Space Grotesk et VT323 (SIL Open Font License).
-- Données : [Radio Browser](https://www.radio-browser.info), [LRCLIB](https://lrclib.net).
+- [FFmpeg](https://ffmpeg.org) (LGPL 2.1 or later), built without any external library, as a separate, replaceable program. Its exact source code is attached to every release.
+- [Electron](https://www.electronjs.org) and Chromium, [React](https://react.dev), [Motion](https://motion.dev), [Lucide](https://lucide.dev), [three.js](https://threejs.org).
+- [butterchurn](https://github.com/jberg/butterchurn) and its MilkDrop presets, [music-metadata](https://github.com/Borewit/music-metadata), [YouTube.js](https://github.com/LuanRT/YouTube.js), [Ghostery adblocker](https://github.com/ghostery/adblocker) (MPL 2.0) with the [uBlock Origin](https://github.com/uBlockOrigin/uAssets) lists (GPL v3, downloaded by the app).
+- Effects from [Canvas UI](https://canvasui.dev) (MIT + Commons Clause).
+- Inter, Space Grotesk and VT323 fonts (SIL Open Font License).
+- Data: [Radio Browser](https://www.radio-browser.info), [LRCLIB](https://lrclib.net).
 
-Chud Music n'est ni affilié à YouTube ou Google, ni approuvé par eux. YouTube est une marque de Google LLC.
+Chud Music is not affiliated with or endorsed by YouTube or Google. YouTube is a trademark of Google LLC.
