@@ -53,7 +53,10 @@ Tens of thousands of stations by country, most listened first, thanks to the ope
 <img src="images/radio.png" alt="Radio: countries, stations and favorites" width="900">
 
 ### Synced lyrics
-The lyrics of the track playing, synced line by line when available, thanks to [LRCLIB](https://lrclib.net). Otherwise the app says so and lets you search by hand.
+The lyrics of the track playing, synced line by line when available, thanks to [LRCLIB](https://lrclib.net). Otherwise the app says so and lets you search by hand. When one of your files has lyrics, a **Synced Lyrics** or **Lyrics** button appears in the player bar.
+
+### Video clip tab
+Right-click a track › *Open the video clip*: the music plays big in its own tab, with its lyrics on the right, or below in *Large* mode, and a full-screen button. YouTube Music songs play as their official music video when one exists. Your own files show their cover, the artist's picture from YouTube Music, or a looping VHS tape. The next tracks stay in the same layout.
 
 ### MilkDrop visualizer
 Hundreds of MilkDrop presets (butterchurn) reacting to the music, full screen if you like, with automatic cycling.
@@ -64,6 +67,7 @@ Hundreds of MilkDrop presets (butterchurn) reacting to the music, full screen if
 - **10-band equalizer** with preamp, presets (Rock, Pop, Jazz, Vocals…) and your own settings.
 - **Listening statistics**: listening time, streaks, favorite hours and days, top tracks, artists and albums, sources.
 - **Mini player**, always on top, cover and controls only.
+- **Random shelf on Home**: tracks from your library, drawn at each launch.
 - **Media keys** (play, next, previous) and buttons in the Windows taskbar thumbnail.
 - **Audio output choice** (headphones, speakers, audio interface) in the settings or with a right-click on the volume.
 - **10 interface languages**, the system's by default.
@@ -77,7 +81,7 @@ Hundreds of MilkDrop presets (butterchurn) reacting to the music, full screen if
 
 ## Five skins
 
-*Chud Nocturne* (dark, LCD green, above), *Cassette 98* (bevelled plastic, the '90s), *Aqua Glow* (midnight-blue glass, the 2000s), *Platine* (light grey, the most readable) and *Signal* (graphite, old-monitor glitches, ASCII, dithering and a glitchy timecode clock). Accent color of your choice, and three effect levels: full, reduced or off.
+*Chud Nocturne* (dark, LCD green, above), *Cassette 98* (bevelled plastic, the '90s), *Aqua Glow* (midnight-blue glass, the 2000s), *Platine* (light grey, the most readable) and *Signal* (graphite, old-monitor glitches, ASCII, dithering, a glitchy timecode clock and glitchy player buttons). Accent color of your choice, and three effect levels: full, reduced or off.
 
 | Cassette 98 | Aqua Glow |
 |---|---|
