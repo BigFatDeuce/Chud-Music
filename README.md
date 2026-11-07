@@ -32,10 +32,10 @@ Free, no account, no ads. Every installation is independent: no key, no credenti
 ## Features
 
 ### Your music, every format
-- **Library**: add your folders (subfolders included). Chud Music reads tags and covers and picks up new files. Browse by tracks, albums or artists, with instant search, even across thousands of tracks.
+- **Library**: add your folders (subfolders included). Chud Music reads tags and covers and picks up new files. Browse by tracks, albums or artists, with instant search, even across thousands of tracks. Artist and album names are clickable, two albums with the same name stay apart, and small albums (fewer than 4 tracks) are hidden from the album grid unless you want them.
 - **All common formats**: MP3, FLAC, AAC/M4A, Ogg, Opus, WAV… plus ALAC, WMA, AIFF, WavPack, AC3 or TTA, converted on the fly by FFmpeg (included).
 - **Double-click in your file manager**: the file opens in the *Opened files* tab of the running window, and the next ones join it.
-- **Tabs, playlists and queue**: drag and drop everywhere, reorder tracks and tabs with the mouse, the same track can appear twice in a playlist.
+- **Tabs, playlists and queue**: drag and drop everywhere, reorder tracks and tabs with the mouse, the same track can appear twice in a playlist. Playlists have their own search, and the open list follows the track playing.
 - **Your files are never modified or deleted.** Removing a track from the library does not touch the disk.
 
 <img src="images/library.png" alt="The library: titles, artists, albums, formats" width="900">
@@ -56,7 +56,7 @@ Tens of thousands of stations by country, most listened first, thanks to the ope
 The lyrics of the track playing, synced line by line when available, thanks to [LRCLIB](https://lrclib.net). Otherwise the app says so and lets you search by hand. When one of your files has lyrics, a **Synced Lyrics** or **Lyrics** button appears in the player bar.
 
 ### Video clip tab
-Right-click a track › *Open the video clip* (or the clip button left of Shuffle): the music plays big in its own tab, with its lyrics on the right, or below in *Large* mode, and a full-screen button. YouTube Music songs play as their official music video when one exists. Your own files show their cover, the artist's picture from YouTube Music, or a looping VHS tape. The next tracks stay in the same layout.
+Right-click a track › *Open the video clip* (or the clip button left of Shuffle): the music plays big in its own tab, with its lyrics on the right, or below in *Large* mode, and a full-screen button. YouTube Music songs play as their official music video when one exists. Your own files show their cover, the artist's picture from YouTube Music, or a looping VHS tape. The next tracks stay in the same layout. Five picture effects (VHS, Glitch, CRT, Noir, Neon) can be added to covers and pictures.
 
 ### MilkDrop visualizer
 Hundreds of MilkDrop presets (butterchurn) reacting to the music, full screen if you like, with automatic cycling.
@@ -68,7 +68,7 @@ Hundreds of MilkDrop presets (butterchurn) reacting to the music, full screen if
 - **Listening statistics**: listening time, streaks, favorite hours and days, top tracks, artists and albums, sources.
 - **Mini player**, always on top, cover and controls only.
 - **Playback speed** from 0.5× to 2× (pitch kept), for your files and YouTube Music.
-- **Random shelf on Home**: tracks from your library, drawn at each launch.
+- **Random shelf on Home**: tracks from your library, drawn at each launch or again with one click.
 - **Media keys** (play, next, previous) and buttons in the Windows taskbar thumbnail.
 - **Audio output choice** (headphones, speakers, audio interface) in the settings or with a right-click on the volume.
 - **10 interface languages**, the system's by default.
