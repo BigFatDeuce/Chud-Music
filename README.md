@@ -35,13 +35,15 @@ Free, no account, no ads. Every installation is independent: no key, no credenti
 - **Library**: add your folders (subfolders included). Chud Music reads tags and covers and picks up new files. Browse by tracks, albums or artists, with instant search, even across thousands of tracks.
 - **All common formats**: MP3, FLAC, AAC/M4A, Ogg, Opus, WAV… plus ALAC, WMA, AIFF, WavPack, AC3 or TTA, converted on the fly by FFmpeg (included).
 - **Double-click in your file manager**: the file opens in the *Opened files* tab of the running window, and the next ones join it.
-- **Tabs, playlists and queue**: drag and drop everywhere, reorder with the mouse, the same track can appear twice in a playlist.
+- **Tabs, playlists and queue**: drag and drop everywhere, reorder tracks and tabs with the mouse, the same track can appear twice in a playlist.
 - **Your files are never modified or deleted.** Removing a track from the library does not touch the disk.
 
 <img src="images/library.png" alt="The library: titles, artists, albums, formats" width="900">
 
 ### YouTube Music, no account
 Search tracks, albums and artists, start a mix: playback goes through **YouTube's official player**, shown inside the app. No Google sign-in, no download, no stream extraction. An ad blocker (uBlock Origin filter lists, updated automatically) can be turned on or off in the settings.
+
+**Paste a YouTube or Spotify link** (track, album or playlist) into the search box: Chud Music finds the same music on YouTube Music, ready to play or to save as a playlist. Artist and album names of YouTube Music tracks open their pages in the app, and a right-click on one of your own files finds its artist on YouTube Music.
 
 When the window is narrow, the YouTube player moves into the player bar: the controls stay exactly where they are, and above them you get the **synced lyrics** or, when there are none, the **track card** (artist, album, your listening history, and links to learn more about the artist on YouTube Music, Wikipedia, Grokipedia, Last.fm and Discogs).
 
@@ -75,7 +77,7 @@ Hundreds of MilkDrop presets (butterchurn) reacting to the music, full screen if
 
 ## Five skins
 
-*Chud Nocturne* (dark, LCD green, above), *Cassette 98* (bevelled plastic, the '90s), *Aqua Glow* (midnight-blue glass, the 2000s), *Platine* (light grey, the most readable) and *Signal* (graphite, old-monitor glitches, ASCII and dithering). Accent color of your choice, and three effect levels: full, reduced or off.
+*Chud Nocturne* (dark, LCD green, above), *Cassette 98* (bevelled plastic, the '90s), *Aqua Glow* (midnight-blue glass, the 2000s), *Platine* (light grey, the most readable) and *Signal* (graphite, old-monitor glitches, ASCII, dithering and a glitchy timecode clock). Accent color of your choice, and three effect levels: full, reduced or off.
 
 | Cassette 98 | Aqua Glow |
 |---|---|
@@ -104,6 +106,7 @@ Tested on Fedora 45. AppImages need FUSE 2, already present on most distribution
 - **No account, no telemetry, no statistics sent anywhere.** Your library, playlists, settings and listening statistics stay on your computer.
 - Chud Music only goes online for what you use:
   YouTube (search and official player, when you open YouTube Music),
+  Spotify's public embed page (only when you paste a Spotify link, to read the track names),
   Radio Browser (station list) and the station you pick,
   LRCLIB (lyrics),
   uBlock Origin filter lists (if the ad blocker is on),
@@ -122,4 +125,4 @@ Chud Music is built on open-source software, shipped with their licenses (`THIRD
 - Inter, Space Grotesk and VT323 fonts (SIL Open Font License).
 - Data: [Radio Browser](https://www.radio-browser.info), [LRCLIB](https://lrclib.net).
 
-Chud Music is not affiliated with or endorsed by YouTube or Google. YouTube is a trademark of Google LLC.
+Chud Music is not affiliated with or endorsed by YouTube, Google or Spotify. YouTube is a trademark of Google LLC; Spotify is a trademark of Spotify AB.
