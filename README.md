@@ -41,7 +41,7 @@ Free, no account, no ads. Every installation is independent: no key, no credenti
 <img src="images/library.png" alt="The library: titles, artists, albums, formats" width="900">
 
 ### YouTube Music, no account
-Search tracks, albums and artists, start a mix: playback goes through **YouTube's official player**, shown inside the app. No Google sign-in, no download, no stream extraction. An ad blocker (uBlock Origin filter lists, updated automatically) can be turned on or off in the settings.
+Search tracks, albums and artists, start a mix: playback goes through **YouTube's official player**, shown inside the app. No Google sign-in, no download, no stream extraction. An ad blocker (uBlock Origin filter lists, updated automatically) can be turned on or off in the settings. Subtitles are always off. A right-click on one of your own files › *Start mix (Online)* finds the same song on YouTube Music and starts its mix.
 
 **Paste a YouTube or Spotify link** (track, album or playlist) into the search box: Chud Music finds the same music on YouTube Music, ready to play or to save as a playlist. Artist and album names of YouTube Music tracks open their pages in the app, and a right-click on one of your own files finds its artist on YouTube Music.
 
@@ -56,7 +56,7 @@ Tens of thousands of stations by country, most listened first, thanks to the ope
 The lyrics of the track playing, synced line by line when available, thanks to [LRCLIB](https://lrclib.net). Otherwise the app says so and lets you search by hand. When one of your files has lyrics, a **Synced Lyrics** or **Lyrics** button appears in the player bar.
 
 ### Video clip tab
-Right-click a track › *Open the video clip*: the music plays big in its own tab, with its lyrics on the right, or below in *Large* mode, and a full-screen button. YouTube Music songs play as their official music video when one exists. Your own files show their cover, the artist's picture from YouTube Music, or a looping VHS tape. The next tracks stay in the same layout.
+Right-click a track › *Open the video clip* (or the clip button left of Shuffle): the music plays big in its own tab, with its lyrics on the right, or below in *Large* mode, and a full-screen button. YouTube Music songs play as their official music video when one exists. Your own files show their cover, the artist's picture from YouTube Music, or a looping VHS tape. The next tracks stay in the same layout.
 
 ### MilkDrop visualizer
 Hundreds of MilkDrop presets (butterchurn) reacting to the music, full screen if you like, with automatic cycling.
@@ -67,6 +67,7 @@ Hundreds of MilkDrop presets (butterchurn) reacting to the music, full screen if
 - **10-band equalizer** with preamp, presets (Rock, Pop, Jazz, Vocals…) and your own settings.
 - **Listening statistics**: listening time, streaks, favorite hours and days, top tracks, artists and albums, sources.
 - **Mini player**, always on top, cover and controls only.
+- **Playback speed** from 0.5× to 2× (pitch kept), for your files and YouTube Music.
 - **Random shelf on Home**: tracks from your library, drawn at each launch.
 - **Media keys** (play, next, previous) and buttons in the Windows taskbar thumbnail.
 - **Audio output choice** (headphones, speakers, audio interface) in the settings or with a right-click on the volume.
