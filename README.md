@@ -18,7 +18,7 @@ Your files, YouTube Music, radio from all over the world and synced lyrics, in o
 
 </div>
 
-> **Language:** the app's interface is in French for now.
+> **Languages:** English, French, Spanish, German, Italian, Portuguese (Brazil), Russian, Japanese, Simplified Chinese and Korean. Chud Music follows your system language by default; you can change it in Settings › Language.
 
 ## Download
 
@@ -64,6 +64,7 @@ Hundreds of MilkDrop presets (butterchurn) reacting to the music, full screen if
 - **Mini player**, always on top, cover and controls only.
 - **Media keys** (play, next, previous) and buttons in the Windows taskbar thumbnail.
 - **Audio output choice** (headphones, speakers, audio interface) in the settings or with a right-click on the volume.
+- **10 interface languages**, the system's by default.
 - **Adjustable interface size**, and a layout that adapts to narrow windows and portrait screens.
 - **Updates**: the app tells you when a new version is published here (the check can be turned off).
 
