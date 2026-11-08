@@ -48,7 +48,7 @@ Search tracks, albums and artists, start a mix: playback goes through **YouTube'
 When the window is narrow, the YouTube player moves into the player bar: the controls stay exactly where they are, and above them you get the **synced lyrics** or, when there are none, the **track card** (artist, album, your listening history, and links to learn more about the artist on YouTube Music, Wikipedia, Grokipedia, Last.fm and Discogs).
 
 ### Radio from all over the world
-Tens of thousands of stations by country, most listened first, thanks to the open directory [Radio Browser](https://www.radio-browser.info). Search, favorites on top, and the title on air when the station broadcasts it.
+Tens of thousands of stations by country, most listened first, thanks to the open directory [Radio Browser](https://www.radio-browser.info). Search, favorites on top, and the title on air when the station broadcasts it. **Rewind**: the last 30 minutes stay in memory, so you can go back to what you missed and return to live, and a paused station goes on where you left it. **Record**: one click saves what you hear, as the station broadcasts it (no re-encoding), into your Music folder.
 
 <img src="images/radio.png" alt="Radio: countries, stations and favorites" width="900">
 
@@ -56,7 +56,7 @@ Tens of thousands of stations by country, most listened first, thanks to the ope
 The lyrics of the track playing, synced line by line when available, thanks to [LRCLIB](https://lrclib.net). Otherwise the app says so and lets you search by hand. When one of your files has lyrics, a **Synced Lyrics** or **Lyrics** button appears in the player bar.
 
 ### Video clip tab
-Right-click a track › *Open the video clip* (or the clip button left of Shuffle): the music plays big in its own tab, with its lyrics on the right, or below in *Large* mode, and a full-screen button. YouTube Music songs play as their official music video when one exists. Your own files show their cover, the artist's picture from YouTube Music, or a looping VHS tape. The next tracks stay in the same layout. Five picture effects (VHS, Glitch, CRT, Noir, Neon) can be added to covers and pictures.
+Right-click a track › *Open the video clip* (or the clip button left of Shuffle): the music plays big in its own tab, with its lyrics on the right, or below in *Large* mode, and a full-screen button. YouTube Music songs play as their official music video when one exists. Your own files show their cover, the artist's picture from YouTube Music, or a looping VHS tape. The next tracks stay in the same layout. A picture effect (VHS, Glitch, CRT, Noir or Neon) can be added to covers and pictures.
 
 ### MilkDrop visualizer
 Hundreds of MilkDrop presets (butterchurn) reacting to the music, full screen if you like, with automatic cycling.
