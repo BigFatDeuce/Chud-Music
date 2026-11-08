@@ -10,7 +10,7 @@ Your files, YouTube Music, radio from all over the world and synced lyrics, in o
 [![Latest release](https://img.shields.io/github/v/release/BigFatDeuce/Chud-Music?label=release&color=c6ff2e&labelColor=101216)](https://github.com/BigFatDeuce/Chud-Music/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/BigFatDeuce/Chud-Music/total?label=downloads&color=3fd8ff&labelColor=101216)](https://github.com/BigFatDeuce/Chud-Music/releases)
 ![Windows](https://img.shields.io/badge/Windows-10%20%7C%2011-1c5bcc?labelColor=101216)
-![Linux](https://img.shields.io/badge/Linux-AppImage-ffb21f?labelColor=101216)
+![Linux](https://img.shields.io/badge/Linux-AppImage%20%7C%20deb%20%7C%20rpm-ffb21f?labelColor=101216)
 
 [**Download**](#download) · [Features](#features) · [Skins](#five-skins) · [Installation](#installation) · [Privacy](#privacy)
 
@@ -22,10 +22,19 @@ Your files, YouTube Music, radio from all over the world and synced lyrics, in o
 
 ## Download
 
-| System | File | |
+All files are on the [latest release](https://github.com/BigFatDeuce/Chud-Music/releases/latest) page.
+
+| System | File | Updates |
 |---|---|---|
-| **Windows** 10 and 11 (64-bit) | `Chud-Music-Setup-x.y.z.exe` | [Latest release](https://github.com/BigFatDeuce/Chud-Music/releases/latest) |
-| **Linux** x86_64 (AppImage) | `Chud-Music-x.y.z-x86_64.AppImage` | [Latest release](https://github.com/BigFatDeuce/Chud-Music/releases/latest) |
+| **Windows** 10 and 11 (64-bit), installer | `Chud-Music-Setup-x.y.z.exe` | in the app, one click |
+| Windows, portable (no installation) | `Chud-Music-x.y.z-Portable.exe` | notified, download by hand |
+| Windows, zip | `Chud-Music-x.y.z-win-x64.zip` | notified, download by hand |
+| **Linux** x86_64, any distribution | `Chud-Music-x.y.z-x86_64.AppImage` | in the app, one click |
+| Linux, Fedora / openSUSE / RHEL | `Chud-Music-x.y.z-x86_64.rpm` | notified, download by hand |
+| Linux, Debian / Ubuntu / Mint | `Chud-Music-x.y.z-amd64.deb` | notified, download by hand |
+| Linux, archive | `Chud-Music-x.y.z-x86_64.tar.gz` | notified, download by hand |
+
+macOS is not available: building and signing for macOS needs a Mac.
 
 Free, no account, no ads. Every installation is independent: no key, no credential and no personal setting ships with the app.
 
@@ -99,12 +108,29 @@ Hundreds of MilkDrop presets (butterchurn) reacting to the music, full screen if
 
 Updates then happen from inside the app, in one click. Your data is kept.
 
-### Linux (AppImage)
+**Portable** (`…-Portable.exe`): runs without installing, from any folder or a USB stick. The **zip** is the same app, unpacked: extract it and run `Chud Music.exe`. Neither registers file associations. Your playlists and settings are stored in your user profile in every case, so switching between them keeps your data.
+
+### Linux
+**AppImage** (any distribution, updates itself):
 ```bash
 chmod +x Chud-Music-*-x86_64.AppImage
 ./Chud-Music-*-x86_64.AppImage
 ```
-Tested on Fedora 45. AppImages need FUSE 2, already present on most distributions; on Ubuntu 24.04: `sudo apt install libfuse2t64` (22.04: `libfuse2`).
+AppImages need FUSE 2, already present on most distributions; on Ubuntu 24.04: `sudo apt install libfuse2t64` (22.04: `libfuse2`).
+
+**rpm** (Fedora, openSUSE, RHEL…):
+```bash
+sudo dnf install ./Chud-Music-*-x86_64.rpm
+```
+**deb** (Debian, Ubuntu, Mint…):
+```bash
+sudo apt install ./Chud-Music-*-amd64.deb
+```
+Both install Chud Music in `/opt/Chud Music`, add it to the applications menu and as the `chud-music` command. Uninstalling (`sudo dnf remove chud-music`, `sudo apt remove chud-music`) keeps your playlists and settings.
+
+**tar.gz**: extract it anywhere and run `chud-music` from the extracted folder.
+
+Tested on Fedora 45 (AppImage, rpm, tar.gz). The deb is built from the same files but was not tried on a Debian-based system.
 
 ## Privacy
 
