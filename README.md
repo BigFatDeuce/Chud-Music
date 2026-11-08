@@ -41,7 +41,7 @@ Free, no account, no ads. Every installation is independent: no key, no credenti
 ## Features
 
 ### Your music, every format
-- **Library**: add your folders (subfolders included). Chud Music reads tags and covers and picks up new files. Browse by tracks, albums or artists, with instant search, even across thousands of tracks. Artist and album names are clickable, two albums with the same name stay apart, and small albums (fewer than 4 tracks) are hidden from the album grid unless you want them.
+- **Library**: add your folders (subfolders included). Chud Music reads tags and covers and picks up new files. Browse by tracks, albums or artists, with instant search, even across thousands of tracks. Artist and album names are clickable, two albums with the same name stay apart, and small albums (fewer than 4 tracks) are hidden from the album grid unless you want them. Folders on a NAS or a shared drive work too: they are checked for changes every hour (or when you scan by hand), and modest PCs start with lighter effects so the app stays smooth.
 - **All common formats**: MP3, FLAC, AAC/M4A, Ogg, Opus, WAV… plus ALAC, WMA, AIFF, WavPack, AC3 or TTA, converted on the fly by FFmpeg (included).
 - **Double-click in your file manager**: the file opens in the *Opened files* tab of the running window, and the next ones join it.
 - **Tabs, playlists and queue**: drag and drop everywhere, reorder tracks and tabs with the mouse, the same track can appear twice in a playlist. Playlists have their own search, and the open list follows the track playing.
