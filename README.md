@@ -12,7 +12,7 @@ Your files, YouTube Music, radio from all over the world and synced lyrics, in o
 ![Windows](https://img.shields.io/badge/Windows-10%20%7C%2011-1c5bcc?labelColor=101216)
 ![Linux](https://img.shields.io/badge/Linux-AppImage%20%7C%20deb%20%7C%20rpm-ffb21f?labelColor=101216)
 
-[**Download**](#download) · [Features](#features) · [Skins](#five-skins) · [Installation](#installation) · [Privacy](#privacy)
+[**Download**](#download) · [Features](#features) · [Skins](#five-skins) · [Installation](#installation) · [Privacy](#privacy) · [Android: Chud Music More](https://github.com/BigFatDeuce/Chud-Music-More)
 
 <img src="images/home.png" alt="Chud Music: home page with the track playing" width="900">
 
@@ -35,6 +35,8 @@ All files are on the [latest release](https://github.com/BigFatDeuce/Chud-Music/
 | Linux, archive | `Chud-Music-x.y.z-x86_64.tar.gz` | notified, download by hand |
 
 macOS is not available: building and signing for macOS needs a Mac.
+
+**On Android?** Try [**Chud Music More**](https://github.com/BigFatDeuce/Chud-Music-More), the music player for your phone: your local music, SMB and WebDAV shares, YouTube Music and Internet radio. Free software (GPL-3.0).
 
 Free, no account, no ads. Every installation is independent: no key, no credential and no personal setting ships with the app.
 
