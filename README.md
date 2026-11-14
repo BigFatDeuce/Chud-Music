@@ -44,7 +44,7 @@ Free, no account, no ads. Every installation is independent: no key, no credenti
 - **Library**: add your folders (subfolders included). Chud Music reads tags and covers and picks up new files. Browse by tracks, albums or artists, with instant search, even across thousands of tracks. Artist and album names are clickable, two albums with the same name stay apart, and small albums (fewer than 4 tracks) are hidden from the album grid unless you want them. Folders on a NAS or a shared drive work too: they are checked for changes every hour (or when you scan by hand), and modest PCs start with lighter effects so the app stays smooth. Tracks without a cover can get one from YouTube Music (kept in Chud Music's own folder, never written into your files), and a wrong one goes away with a right-click.
 - **All common formats**: MP3, FLAC, AAC/M4A, Ogg, Opus, WAV… plus ALAC, WMA, AIFF, WavPack, AC3 or TTA, converted on the fly by FFmpeg (included).
 - **Double-click in your file manager**: the file opens in the *Opened files* tab of the running window, and the next ones join it.
-- **Tabs, playlists and queue**: drag and drop everywhere, reorder tracks and tabs with the mouse, the same track can appear twice in a playlist. Playlists have their own search, and the open list follows the track playing. A playlist's … menu › *Replace with my local files* swaps its YouTube Music tracks for the same songs from your library, so they play offline and in full quality.
+- **Tabs, playlists and queue**: drag and drop everywhere, reorder tracks and tabs with the mouse, the same track can appear twice in a playlist. Playlists have their own search, and the open list follows the track playing. A playlist's … menu › *Replace with my local files* swaps its YouTube Music tracks for the same songs from your library, so they play offline and in full quality. Playlists sort by title, artist, album or duration like the library, *Find duplicates…* clears repeated tracks (after asking), and an empty playlist fills itself from a pasted YouTube Music, YouTube or Spotify link.
 - **Your files are never modified or deleted.** Removing a track from the library does not touch the disk.
 
 <img src="images/library.png" alt="The library: titles, artists, albums, formats" width="900">
@@ -77,7 +77,7 @@ Hundreds of MilkDrop presets (butterchurn) reacting to the music, full screen if
 - **Listening statistics**: listening time, streaks, favorite hours and days, top tracks, artists and albums, sources.
 - **Mini player**, always on top, cover and controls only.
 - **Playback speed** from 0.5× to 2× (pitch kept), for your files and YouTube Music.
-- **Random shelf on Home**: tracks from your library, drawn at each launch or again with one click.
+- **Home your way**: a Random shelf drawn at each launch (or again with one click), a big LCD clock, a right-click to take a track out of *Recently played* or *Recently added*, and each section can be hidden in Settings.
 - **Media keys** (play, next, previous) and buttons in the Windows taskbar thumbnail.
 - **Audio output choice** (headphones, speakers, audio interface) in the settings or with a right-click on the volume.
 - **10 interface languages**, the system's by default.
