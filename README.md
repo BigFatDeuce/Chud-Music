@@ -43,16 +43,16 @@ Free, no account, no ads. Every installation is independent: no key, no credenti
 ## Features
 
 ### Your music, every format
-- **Library**: add your folders (subfolders included). Chud Music reads tags and covers and picks up new files. Browse by tracks, albums or artists, with instant search, even across thousands of tracks. Artist and album names are clickable, two albums with the same name stay apart, and small albums (fewer than 4 tracks) are hidden from the album grid unless you want them. Folders on a NAS or a shared drive work too: they are checked for changes every hour (or when you scan by hand), and modest PCs start with lighter effects so the app stays smooth. Tracks without a cover can get one from YouTube Music (kept in Chud Music's own folder, never written into your files), and a wrong one goes away with a right-click.
+- **Library**: add your folders (subfolders included). Chud Music reads tags and covers and picks up new files. Browse by tracks, albums or artists, with instant search, even across thousands of tracks. Artist and album names are clickable, two albums with the same name stay apart, and small albums (fewer than 4 tracks) are hidden from the album grid unless you want them. Folders on a NAS or a shared drive work too: they are checked for changes every hour (or when you scan by hand), and modest PCs start with lighter effects so the app stays smooth. Tracks without a cover can get one from Deezer or iTunes (kept in Chud Music's own folder, never written into your files), and a wrong one goes away with a right-click.
 - **All common formats**: MP3, FLAC, AAC/M4A, Ogg, Opus, WAV… plus ALAC, WMA, AIFF, WavPack, AC3 or TTA, converted on the fly by FFmpeg (included).
 - **Double-click in your file manager**: the file opens in the *Opened files* tab of the running window, and the next ones join it.
-- **Tabs, playlists and queue**: drag and drop everywhere, reorder tracks and tabs with the mouse, the same track can appear twice in a playlist. Playlists have their own search, and the open list follows the track playing. A playlist's … menu › *Replace with my local files* swaps its YouTube Music tracks for the same songs from your library, so they play offline and in full quality. Playlists sort by title, artist, album or duration like the library, *Find duplicates…* clears repeated tracks (after asking), and an empty playlist fills itself from a pasted YouTube Music, YouTube or Spotify link.
+- **Tabs, playlists and queue**: drag and drop everywhere, reorder tracks and tabs with the mouse, the same track can appear twice in a playlist. Playlists have their own search, and the open list follows the track playing. A playlist's … menu › *Replace with my local files* swaps its YouTube Music tracks for the same songs from your library, so they play offline and in full quality. Playlists sort by title, artist, album or duration like the library, *Find duplicates…* clears repeated tracks (after asking) and keeps the best copy of each (FLAC rather than MP3, the higher bit rate, a file rather than its YouTube Music twin; a video file is never taken for a song), and an empty playlist fills itself from a pasted YouTube Music, YouTube or Spotify link.
 - **Your files are never modified or deleted.** Removing a track from the library does not touch the disk.
 
 <img src="images/library.png" alt="The library: titles, artists, albums, formats" width="900">
 
 ### YouTube Music, no account
-Search tracks, albums and artists, start a mix: playback goes through **YouTube's official player**, shown inside the app. No Google sign-in, no download, no stream extraction. An ad blocker (uBlock Origin filter lists, updated automatically) can be turned on or off in the settings. Subtitles are always off. A right-click on one of your own files › *Start mix (Online)* finds the same song on YouTube Music and starts its mix.
+Search tracks, albums and artists, start a mix: playback goes through **YouTube's official player**, shown inside the app. No Google sign-in, no download, no stream extraction. An ad blocker (uBlock Origin filter lists, updated automatically) can be turned on or off in the settings. Subtitles are always off. While the player is small, YouTube is asked for 480p at most (sharper would not show, and it saves bandwidth). A right-click on one of your own files › *Start mix (Online)* finds the same song on YouTube Music and starts its mix.
 
 **Paste a YouTube or Spotify link** (track, album or playlist) into the search box: Chud Music finds the same music on YouTube Music, ready to play or to save as a playlist. Artist and album names of YouTube Music tracks open their pages in the app, and a right-click on one of your own files finds its artist on YouTube Music.
 
@@ -67,7 +67,7 @@ Tens of thousands of stations by country, most listened first, thanks to the ope
 The lyrics of the track playing, synced line by line when available, thanks to [LRCLIB](https://lrclib.net). Otherwise the app says so and lets you search by hand. When one of your files has lyrics, a **Synced Lyrics** or **Lyrics** button appears in the player bar.
 
 ### Video clip tab
-Right-click a track › *Open the video clip* (or the clip button left of Shuffle): the music plays big in its own tab, with its lyrics on the right, or below in *Large* mode, and a full-screen button. YouTube Music songs play as their official music video when one exists. Your own files show their cover, the artist's picture from YouTube Music, or a looping VHS tape. The next tracks stay in the same layout. A picture effect (VHS, Glitch, CRT, Noir or Neon) can be added to covers and pictures.
+Right-click a track › *Open the video clip* (or the clip button left of Shuffle): the music plays big in its own tab, with its lyrics on the right, or below in *Large* mode, and a full-screen button: full screen stays on from one track to the next, whether it is a YouTube video or one of your files. The picture always fits the window, also on displays scaled to 125 % or 150 %. YouTube Music songs play as their official music video when one exists. Your own files show their cover, the artist's picture from YouTube Music, or a looping VHS tape. The next tracks stay in the same layout. A picture effect (VHS, Glitch, CRT, Noir or Neon) can be added to covers and pictures.
 
 ### MilkDrop visualizer
 Hundreds of MilkDrop presets (butterchurn) reacting to the music, full screen if you like, with automatic cycling.
@@ -142,6 +142,7 @@ Tested on Fedora 45 (AppImage, rpm, tar.gz). The deb is built from the same file
   Spotify's public embed page (only when you paste a Spotify link, to read the track names),
   Radio Browser (station list) and the station you pick,
   LRCLIB (lyrics),
+  Deezer and iTunes (only when you start *Find missing covers*: the artist, album and title of the files without cover),
   uBlock Origin filter lists (if the ad blocker is on),
   GitHub (update check, can be turned off).
 - To animate its little spectrum while YouTube plays, the app measures the sound levels of the official player; playback is not changed and nothing is recorded.
