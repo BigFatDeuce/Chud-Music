@@ -1,0 +1,446 @@
+/* ── Video clip tab (pages/ClipPage.tsx) ─────────────────────────────────────────────────── */
+.clip-page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.clip-page:not(.wide) {
+  overflow: hidden;
+}
+.clip-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex: none;
+  min-width: 0;
+}
+.clip-head-text {
+  min-width: 0;
+}
+.clip-title {
+  margin: 0;
+  font: var(--display-weight) 26px/1.15 var(--font-display);
+  letter-spacing: var(--display-tracking);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.clip-artist {
+  margin-top: 4px;
+  color: var(--text-1);
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.clip-actions {
+  display: flex;
+  gap: 8px;
+  flex: none;
+}
+.clip-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 32%);
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+}
+.clip-page.wide .clip-body {
+  grid-template-columns: minmax(0, 1fr);
+  flex: none;
+}
+.clip-main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  min-height: 0;
+}
+/* The stage is always a whole 16:9 picture, centred, as big as the room allows — whatever the
+   window size or the display scale (125 %, 150 %…):
+   • beside the lyrics: fitted in the column, in width AND in height (the effect buttons stay
+     under it);
+   • "Large": as wide as the page, but never taller than what the page shows at once, so the
+     whole picture and its buttons are seen without scrolling; the lyrics start right under. */
+.clip-page {
+  container: clip-page / size;
+}
+.clip-page:not(.wide) .clip-main {
+  container: clip-main / size;
+}
+.clip-stage {
+  position: relative;
+  align-self: center;
+  /* 46 px: the effect buttons and their gap */
+  width: min(100%, max(220px, 100cqh - 46px) * 16 / 9);
+  aspect-ratio: 16 / 9;
+  flex: none;
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 20px 50px -24px rgb(0 0 0 / 0.9);
+}
+.clip-page.wide .clip-stage {
+  /* 116 px: the title block (54), the gap under it (16) and the effect buttons (46) */
+  width: min(100%, max(220px, 100cqh - 116px) * 16 / 9);
+}
+/* narrow windows: one column that scrolls, the stage as wide as the page */
+.app.compact .clip-page:not(.wide) .clip-main {
+  container-type: normal;
+}
+.app.compact .clip-page:not(.wide) .clip-stage {
+  width: min(100%, max(220px, 100cqh - 116px) * 16 / 9);
+}
+
+/* Full screen (the app's root is full screen, set by ClipPage): the stage fills the window and
+   the YouTube player, laid over it, follows. Containers are switched off: a size container
+   would keep the fixed stage inside itself. */
+:root[data-clip-full] .clip-page,
+:root[data-clip-full] .clip-main {
+  container-type: normal !important;
+}
+/* (the page's entrance animation must not hold the fixed stage either) */
+:root[data-clip-full] .page-host > div {
+  transform: none !important;
+}
+:root[data-clip-full] .clip-stage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 90;
+  /* explicit: a centred box that is out of flow would shrink to its (empty) content */
+  width: 100vw;
+  height: 100vh;
+  align-self: auto;
+  aspect-ratio: auto;
+  border-radius: 0;
+  box-shadow: none;
+}
+:root[data-clip-full] .living-cover.in-clip {
+  z-index: 91;
+}
+:root[data-clip-full] .living-cover.in-clip,
+:root[data-clip-full] .living-cover.in-clip .living-cover-frame {
+  border-radius: 0 !important;
+}
+.clip-yt-slot {
+  position: absolute;
+  inset: 0;
+}
+.clip-empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--text-2);
+}
+/* the player laid over the stage: no rounded frame inside, the stage has its own */
+.living-cover.in-clip,
+.living-cover.in-clip .living-cover-frame {
+  border-radius: var(--radius-l);
+}
+.living-cover.in-clip .living-cover-frame {
+  background: #000;
+}
+
+/* a local file: its cover (or the artist's picture), over a blurred copy of itself */
+.clip-art {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.clip-art-bg {
+  position: absolute;
+  inset: -10%;
+  width: 120%;
+  height: 120%;
+  object-fit: cover;
+  filter: blur(40px) saturate(1.3) brightness(0.55);
+}
+.clip-art-img {
+  position: relative;
+  height: 86%;
+  width: auto;
+  max-width: 86%;
+  aspect-ratio: 1 / 1;
+  flex: none;
+  object-fit: cover;
+  border-radius: var(--radius-m);
+  box-shadow: 0 24px 60px -18px rgb(0 0 0 / 0.85);
+}
+.clip-art.artist .clip-art-img {
+  border-radius: 50%;
+}
+[data-effects='full'] .clip-art[data-playing] .clip-art-img {
+  animation: clip-breathe 9s ease-in-out infinite alternate;
+}
+@keyframes clip-breathe {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.035);
+  }
+}
+
+/* the tape placeholder: black bars cropped (the picture is 2.39:1 inside a 16:9 file), VHS look */
+.clip-vhs {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+}
+.clip-vhs video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* 720 / 536: the 92 px bars above and below leave the frame */
+  transform: scale(1.345);
+  filter: saturate(1.35) contrast(1.12) brightness(1.05) sepia(0.12) hue-rotate(-6deg) blur(0.4px);
+}
+.vhs-lines,
+.vhs-band {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.vhs-lines {
+  background:
+    repeating-linear-gradient(0deg, rgb(0 0 0 / 0.28) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / 0.55));
+  mix-blend-mode: multiply;
+}
+.vhs-band {
+  top: auto;
+  height: 14%;
+  background: linear-gradient(transparent, rgb(255 255 255 / 0.08) 40%, rgb(255 255 255 / 0.16) 50%, rgb(255 255 255 / 0.05) 60%, transparent);
+  transform: translateY(100%);
+  animation: vhs-roll 7s linear infinite;
+}
+.vhs-osd {
+  position: absolute;
+  top: 6%;
+  left: 5%;
+  font: 22px/1 var(--font-lcd);
+  letter-spacing: 0.08em;
+  color: #f2f2f2;
+  text-shadow: -2px 0 rgb(255 40 80 / 0.6), 2px 0 rgb(40 230 255 / 0.6), 0 0 6px rgb(255 255 255 / 0.4);
+}
+[data-effects='full'] .clip-vhs video {
+  animation: vhs-jitter 5.5s steps(1) infinite;
+}
+@keyframes vhs-roll {
+  from {
+    transform: translateY(-120%);
+  }
+  to {
+    transform: translateY(800%);
+  }
+}
+@keyframes vhs-jitter {
+  0%, 92%, 100% {
+    translate: 0 0;
+  }
+  93% {
+    translate: 3px 0;
+  }
+  94.5% {
+    translate: -2px 1px;
+  }
+  96% {
+    translate: 1px 0;
+  }
+}
+
+/* lyrics: beside the stage (they follow the music), or under it in "Large" (scrolled by hand) */
+.clip-lyrics {
+  min-height: 0;
+  max-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 18px 8px 40vh 4px;
+  mask-image: linear-gradient(transparent, #000 8%, #000 85%, transparent);
+}
+.clip-page.wide .clip-lyrics {
+  max-height: none;
+  overflow: visible;
+  mask-image: none;
+  padding: 8px 0 40px;
+}
+.clip-line {
+  display: block;
+  width: 100%;
+  padding: 6px 4px;
+  text-align: left;
+  font: 600 19px/1.35 var(--font-ui);
+  color: var(--text-2);
+  border-radius: var(--radius-s);
+  transition: color var(--t-menu) var(--ease), transform var(--t-menu) var(--ease);
+  transform-origin: left center;
+}
+.clip-line:hover {
+  color: var(--text-1);
+}
+.clip-line.past {
+  color: color-mix(in srgb, var(--text-2) 70%, transparent);
+}
+.clip-line.on {
+  color: var(--text-0);
+  transform: scale(1.04);
+}
+.clip-page.wide .clip-line {
+  font-size: 22px;
+}
+.clip-plain {
+  white-space: pre-wrap;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-1);
+}
+.clip-lyrics-none {
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+  color: var(--text-2);
+}
+@media (prefers-reduced-motion: reduce) {
+  .clip-vhs video,
+  .vhs-band,
+  .clip-art-img {
+    animation: none !important;
+  }
+}
+/* narrow windows: always one column */
+.app.compact .clip-body {
+  grid-template-columns: minmax(0, 1fr);
+}
+.app.compact .clip-page:not(.wide) {
+  overflow-y: auto;
+}
+
+/* ── picture effects (local stage only; never over the YouTube player) ───────────────────── */
+.clip-fx {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.clip-fx-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: var(--radius-m);
+  font: 600 12.5px/1 var(--font-ui);
+  color: var(--text-1);
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  transition: color var(--t-fast) var(--ease), background var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
+}
+.clip-fx-btn:hover:not(:disabled) {
+  color: var(--text-0);
+  background: var(--bg-3);
+}
+.clip-fx-btn:active:not(:disabled) {
+  transform: scale(0.96);
+}
+.clip-fx-btn.on {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.clip-fx-btn:disabled {
+  opacity: 0.4;
+}
+.clip-fx-note {
+  color: var(--text-2);
+  font-size: 12px;
+}
+.clip-fx-layer {
+  position: absolute;
+  inset: 0;
+}
+.clip-fx-over {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+/* VHS: warm washed colours, scanlines, a band rolling down, a little shake */
+.fx-vhs .clip-fx-layer {
+  filter: saturate(1.4) contrast(1.1) sepia(0.18) hue-rotate(-8deg) blur(0.5px);
+}
+.fx-vhs .clip-fx-over {
+  background:
+    linear-gradient(transparent 0 44%, rgb(255 255 255 / 0.1) 48%, transparent 52%) 0 0 / 100% 300% no-repeat,
+    repeating-linear-gradient(0deg, rgb(0 0 0 / 0.25) 0 1px, transparent 1px 3px);
+  animation: fx-vhs-roll 6s linear infinite;
+}
+.fx-vhs[data-playing] .clip-fx-layer {
+  animation: vhs-jitter 4.5s steps(1) infinite;
+}
+@keyframes fx-vhs-roll {
+  from { background-position: 0 100%, 0 0; }
+  to { background-position: 0 -200%, 0 0; }
+}
+/* Glitch: the picture tears and splits red/cyan for a few frames, every few seconds */
+.fx-glitch .clip-fx-layer {
+  animation: fx-glitch 3.2s steps(1) infinite;
+}
+@keyframes fx-glitch {
+  0%, 88%, 100% { transform: none; clip-path: none; filter: none; }
+  89% { transform: translateX(-3%); clip-path: inset(18% 0 52% 0); filter: drop-shadow(6px 0 rgb(46 242 255 / 0.85)) drop-shadow(-6px 0 rgb(255 46 91 / 0.85)); }
+  91% { transform: translateX(2.5%) skewX(-6deg); clip-path: inset(55% 0 12% 0); filter: drop-shadow(-6px 0 rgb(46 242 255 / 0.85)) drop-shadow(6px 0 rgb(255 46 91 / 0.85)); }
+  93% { transform: translateX(-1%); clip-path: inset(0 0 70% 0); filter: hue-rotate(90deg) saturate(2); }
+  95% { transform: none; clip-path: none; filter: drop-shadow(3px 0 rgb(255 46 91 / 0.8)); }
+}
+/* CRT: fine scanlines, a curved dark edge and a faint flicker */
+.fx-crt .clip-fx-over {
+  background:
+    radial-gradient(ellipse at center, transparent 58%, rgb(0 0 0 / 0.75) 100%),
+    repeating-linear-gradient(0deg, rgb(0 0 0 / 0.35) 0 1px, transparent 1px 2px),
+    repeating-linear-gradient(90deg, rgb(255 0 0 / 0.05) 0 1px, rgb(0 255 0 / 0.04) 1px 2px, rgb(0 0 255 / 0.05) 2px 3px);
+  animation: fx-crt-flicker 0.12s steps(2) infinite;
+}
+.fx-crt .clip-fx-layer {
+  filter: contrast(1.15) brightness(1.08);
+}
+@keyframes fx-crt-flicker {
+  50% { opacity: 0.88; }
+}
+/* Noir: black and white, hard contrast, film grain */
+.fx-mono .clip-fx-layer {
+  filter: grayscale(1) contrast(1.35) brightness(0.95);
+}
+.fx-mono .clip-fx-over {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+  opacity: 0.5;
+  animation: fx-grain 0.4s steps(3) infinite;
+}
+@keyframes fx-grain {
+  0% { background-position: 0 0; }
+  33% { background-position: -40px 25px; }
+  66% { background-position: 30px -35px; }
+}
+/* Neon: saturated colours drifting round the colour wheel, with a glow */
+.fx-neon .clip-fx-layer {
+  filter: saturate(1.9) contrast(1.1) brightness(1.08) drop-shadow(0 0 18px color-mix(in srgb, var(--accent) 60%, transparent));
+  animation: fx-neon 10s linear infinite;
+}
+@keyframes fx-neon {
+  from { filter: saturate(1.9) contrast(1.1) brightness(1.08) hue-rotate(0deg); }
+  to { filter: saturate(1.9) contrast(1.1) brightness(1.08) hue-rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .clip-fx-layer,
+  .clip-fx-over {
+    animation: none !important;
+  }
+}

@@ -1,0 +1,152 @@
+/* ── Narrow and portrait windows ─────────────────────────────────────────────
+   Checked at 1080×1920, 720×1280 and 608×1080 (9:16) and with many tabs open
+   (tests/e2e/layout.mjs). Two steps: a tighter desktop layout, then "compact"
+   (≤ 960 px): sidebar in a drawer, player bar on two rows. */
+
+@media (max-width: 1180px) {
+  .app {
+    grid-template-columns: 216px minmax(0, 1fr);
+  }
+  .playerbar {
+    grid-template-columns: minmax(150px, 1fr) minmax(280px, 1.5fr) auto;
+    gap: 14px;
+  }
+  .app:not(.compact) .playerbar.yt-docked {
+    grid-template-columns: minmax(330px, 1fr) minmax(280px, 1.5fr) auto;
+  }
+  .player-right .spectrum {
+    display: none;
+  }
+  .volume {
+    width: 120px;
+  }
+}
+
+.menu-btn {
+  -webkit-app-region: no-drag;
+  margin-right: -4px;
+}
+
+.app.compact {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    'title'
+    'main'
+    'player';
+}
+
+/* sidebar → drawer (left offset, not a transform: the YouTube card below must stay
+   positioned against the window) */
+.app.compact .sidebar.drawer {
+  position: fixed;
+  z-index: 60;
+  top: 40px;
+  bottom: 10px;
+  left: calc(-1 * min(300px, 86vw) - 20px);
+  width: min(300px, 86vw);
+  padding: 0 0 0 10px;
+  visibility: hidden;
+  transition: left var(--t-menu) var(--ease), visibility 0s linear var(--t-menu);
+}
+.app.compact .sidebar.drawer.open {
+  left: 0;
+  visibility: visible;
+  transition: left var(--t-menu) var(--ease);
+}
+/* YouTube playing and no room for its player under the menu: the player sits beside the drawer
+   (never under it), and the drawer narrows enough to leave it 200 px plus margins */
+.app.compact .sidebar.drawer.open.yt-beside {
+  width: min(300px, 86vw, calc(100vw - 236px));
+}
+.drawer-backdrop {
+  position: fixed;
+  inset: 40px 0 0;
+  z-index: 55;
+  background: rgb(0 0 0 / 0.45);
+}
+
+/* player bar on two rows: track + buttons, then transport and seek bar */
+.app.compact {
+  --player-h: 148px;
+}
+.app.compact .playerbar {
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'np right'
+    'transport transport';
+  height: auto;
+  min-height: var(--player-h);
+  row-gap: 4px;
+  padding: 8px 12px 6px;
+}
+.app.compact .np {
+  grid-area: np;
+}
+.app.compact .transport {
+  grid-area: transport;
+}
+.app.compact .player-right {
+  grid-area: right;
+  gap: 4px;
+}
+.app.compact .np-cover {
+  width: 52px;
+  height: 52px;
+}
+/* portrait: the badges (and the lyrics button) stay, under the title, a little smaller */
+.app.compact .np-badges {
+  gap: 4px;
+  overflow: hidden;
+}
+.app.compact .np-badges .badge,
+.app.compact .np-lyrics-btn {
+  height: 18px;
+  font-size: 10.5px;
+  padding: 0 5px;
+  flex: none;
+}
+.app.compact .volume {
+  width: 116px;
+}
+.app.compact .eq-panel,
+.app.compact .queue {
+  bottom: calc(var(--bar-h, var(--player-h)) + 22px);
+}
+.app.compact .eq-panel {
+  right: 10px;
+  width: calc(100vw - 20px);
+}
+.app.compact .queue {
+  right: 10px;
+  top: 92px;
+  width: min(360px, calc(100vw - 20px));
+}
+
+/* page content: less padding, the library toolbar stacks */
+.app.compact .page {
+  padding-left: 18px;
+  padding-right: 18px;
+}
+.app.compact .page-title {
+  font-size: 30px;
+}
+.app.compact .home-hero {
+  padding: 22px;
+}
+.app.compact .resume-art-host {
+  width: 104px;
+  height: 104px;
+}
+.app.compact .list-hero {
+  gap: 16px;
+}
+.app.compact .list-hero .list-hero-art {
+  width: 112px !important;
+  height: 112px !important;
+}
+.app.compact .list-hero-title {
+  font-size: 28px;
+}
+.app.compact .viz-cycle button:not(:first-child) {
+  display: none;
+}

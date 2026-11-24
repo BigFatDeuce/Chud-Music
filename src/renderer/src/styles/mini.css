@@ -1,0 +1,121 @@
+/* ── Mini player ─────────────────────────────────────────────────────────────
+   The same components, re-arranged: the living cover becomes the jacket (it keeps the
+   YouTube player alive and visible), the player bar keeps its transport, shuffle, repeat
+   and queue. Everything else steps aside without being unmounted. */
+.mini-open,
+.mini-controls {
+  -webkit-app-region: no-drag;
+}
+.mini-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 4px;
+}
+.mini-expand {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 12.5px;
+}
+.app.mini {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 40px minmax(0, 1fr) auto;
+  grid-template-areas:
+    'title'
+    'side'
+    'player';
+  padding: 0 8px 8px;
+}
+.app.mini .brand {
+  font-size: 0; /* logo only */
+}
+.app.mini .brand small {
+  display: none;
+}
+.app.mini .main,
+.app.mini .aura {
+  display: none;
+}
+/* sidebar: only the living cover stays */
+.app.mini .sidebar {
+  min-height: 0;
+}
+.app.mini .nav,
+.app.mini .deck-head,
+.app.mini .deck .side-list {
+  display: none;
+}
+.app.mini .deck {
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  justify-content: center;
+}
+.app.mini .deck .living-cover {
+  display: block !important;
+  width: min(100%, calc(100vh - 210px));
+  margin: 0 auto;
+  padding: 0;
+}
+/* player bar: title, then the controls */
+.app.mini .playerbar {
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'np right'
+    'transport transport';
+  height: auto;
+  margin-top: 8px;
+  padding: 8px 10px;
+  row-gap: 4px;
+}
+.app.mini .np {
+  grid-area: np;
+}
+.app.mini .np-cover,
+.app.mini .np-badges,
+.app.mini .player-right .spectrum,
+.app.mini .player-right .volume,
+.app.mini .player-right button[aria-label='Égaliseur'] {
+  display: none;
+}
+.app.mini .transport {
+  grid-area: transport;
+}
+.app.mini .player-right {
+  grid-area: right;
+}
+.app.mini .seek-row .time {
+  font-size: 13px;
+}
+.app.mini .queue {
+  inset: 44px 8px 8px 8px;
+  width: auto;
+}
+.app.mini .task-tray,
+.app.mini .toasts {
+  left: 8px;
+  right: 8px;
+  bottom: 140px;
+  width: auto;
+}
+/* title bar: logo, pin, "Agrandir", minimise, close — no maximise, everything fits in 280 px */
+.app.mini .titlebar {
+  gap: 4px;
+  padding-left: 8px;
+}
+.app.mini .win-controls button[hidden] {
+  display: none;
+}
+.app.mini .win-controls button {
+  width: 34px;
+}
+.app.mini .titlebar-spacer {
+  min-width: 0;
+}
+/* clip and visualizer open tabs, which the mini player does not show: their buttons step aside */
+.app.mini .transport-buttons .bar-tab-btn {
+  display: none;
+}

@@ -1,0 +1,173 @@
+/* ── Equaliser panel ─────────────────────────────────────────────────────────
+   Floats above the player bar, next to its button. The response curve sits on the
+   skin's LCD; the sliders are real vertical faders (drag, wheel, arrows, double-click 0). */
+.eq-panel {
+  position: fixed;
+  right: 20px;
+  bottom: calc(var(--bar-h, 92px) + 22px);
+  z-index: 45;
+  width: min(600px, calc(100vw - 40px));
+  padding: 14px 16px 12px;
+  display: grid;
+  gap: 12px;
+  box-shadow: var(--panel-shadow), 0 24px 50px -18px rgb(0 0 0 / 0.6);
+}
+.eq-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.eq-head > b {
+  font-weight: 600;
+  margin-right: auto;
+}
+.eq-head .segmented button {
+  height: 28px;
+  padding: 0 10px;
+}
+.eq-preset {
+  height: 32px;
+  min-width: 128px;
+  justify-content: space-between;
+}
+.eq-screen {
+  padding: 6px 8px;
+}
+.eq-curve {
+  display: block;
+  width: 100%;
+  height: 92px;
+}
+.eq-curve-zero {
+  stroke: var(--lcd-dim);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+  vector-effect: non-scaling-stroke;
+}
+.eq-curve-fill {
+  fill: var(--lcd-dim);
+}
+.eq-curve-line {
+  fill: none;
+  stroke: var(--lcd-fg);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(var(--lcd-glow));
+}
+
+.eq-sliders {
+  display: grid;
+  grid-template-columns: 52px 26px repeat(10, 1fr);
+  align-items: stretch;
+  gap: 4px;
+  transition: opacity var(--t-fast) var(--ease);
+}
+.eq-sliders.off {
+  opacity: 0.45;
+}
+.eq-col {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+}
+.eq-col.preamp {
+  border-right: 1px solid var(--line);
+  padding-right: 6px;
+}
+.eq-val {
+  font-size: 17px;
+  line-height: 1;
+  min-height: 17px;
+}
+.eq-label {
+  font-size: 11.5px;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+.eq-scale {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 25px 0 22px;
+  font-size: 10.5px;
+  color: var(--text-2);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.eq-vslider {
+  --pct: 50%;
+  position: relative;
+  width: 28px;
+  height: 140px;
+  cursor: ns-resize;
+  touch-action: none;
+  border-radius: var(--radius-s);
+}
+.eq-vslider:focus-visible {
+  outline-offset: 0;
+}
+.eq-track {
+  position: absolute;
+  left: 50%;
+  top: 6px;
+  bottom: 6px;
+  width: 6px;
+  transform: translateX(-50%);
+  border-radius: 3px;
+  background: var(--bg-3);
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.35);
+}
+.eq-zero {
+  position: absolute;
+  left: -5px;
+  right: -5px;
+  top: 50%;
+  height: 1px;
+  background: var(--line-strong);
+}
+/* fill from the 0 dB line to the thumb, up or down */
+.eq-fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-radius: 3px;
+  background: var(--accent);
+  top: min(50%, calc(100% - var(--pct)));
+  bottom: min(50%, var(--pct));
+}
+.eq-thumb {
+  position: absolute;
+  left: 50%;
+  bottom: var(--pct);
+  width: 22px;
+  height: 12px;
+  transform: translate(-50%, 50%);
+  border-radius: 4px;
+  background: var(--btn-bg);
+  border: var(--btn-border);
+  box-shadow: var(--btn-shadow), 0 2px 5px rgb(0 0 0 / 0.35);
+  transition: transform var(--t-fast) var(--ease);
+}
+.eq-thumb::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  border-radius: 1px;
+  background: var(--accent);
+}
+.eq-vslider.dragging .eq-thumb {
+  transform: translate(-50%, 50%) scale(1.06);
+}
+[data-skin='cassette'] .eq-thumb {
+  border-radius: 1px;
+}
+.eq-note {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-2);
+}

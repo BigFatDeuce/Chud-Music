@@ -1,0 +1,10 @@
+node_modules/
+out/
+dist/
+*.log
+tests/fixtures/music/
+tests/fixtures/covers/
+tests/output/
+build/vendor/
+build/THIRD-PARTY-NOTICES.txt
+.env*

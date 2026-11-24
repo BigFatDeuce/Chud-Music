@@ -1,0 +1,202 @@
+/* ── Radio ──────────────────────────────────────────────────────────────── */
+.radio-page {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+}
+.radio-page .radio-main {
+  position: relative;
+}
+.radio-countries {
+  margin: 12px 0 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 8px;
+  min-height: 0;
+}
+.radio-countries .search {
+  flex: none;
+  min-width: 0;
+}
+.radio-country-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+.radio-country {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 8px;
+  border-radius: var(--radius-m);
+  color: var(--text-1);
+  text-align: left;
+  font-size: 13px;
+}
+.radio-country > span:last-child {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+.radio-country:hover {
+  background: var(--bg-3);
+  color: var(--text-0);
+}
+.radio-country.on {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.radio-country.fav {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.radio-flag {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 16px;
+  border-radius: 3px;
+  background: var(--bg-3);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-2);
+}
+.radio-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.radio-search {
+  flex: 0 1 320px;
+}
+.radio-filter {
+  max-width: 360px;
+  margin-bottom: 10px;
+}
+.radio-list {
+  display: grid;
+  gap: 2px;
+}
+.radio-row {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 8px;
+  border-radius: var(--radius-m);
+}
+.radio-row:hover {
+  background: var(--bg-2);
+}
+.radio-row.on {
+  background: var(--accent-soft);
+}
+.radio-row.on .radio-text b {
+  color: var(--accent);
+}
+.radio-play {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-s);
+  background: var(--bg-3);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: var(--text-2);
+}
+.radio-play img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #fff;
+}
+.radio-play-icon {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgb(0 0 0 / 0.55);
+  color: #fff;
+  opacity: 0;
+  transition: opacity var(--t-fast) var(--ease);
+}
+.radio-row:hover .radio-play-icon,
+.radio-row.on .radio-play-icon {
+  opacity: 1;
+}
+.radio-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.radio-text b {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.radio-text span {
+  font-size: 12px;
+  color: var(--text-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.radio-star.on {
+  color: #f5b301;
+}
+.radio-star.on::after {
+  display: none;
+}
+.radio-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-2);
+  font-size: 13px;
+  padding: 8px;
+}
+.radio-note.warn {
+  color: var(--danger);
+}
+.badge.live::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  margin-right: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  display: inline-block;
+}
+.app.compact .radio-page {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 150px minmax(0, 1fr);
+}
+.app.compact .radio-countries {
+  margin: 10px 10px 0;
+}
+/* long names ("Îles mineures éloignées des États-Unis") stay on one line */
+.radio-country-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.radio-flag {
+  flex: none;
+}
+.radio-country > span:last-child {
+  flex: none;
+  margin-left: 6px;
+}

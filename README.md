@@ -11,8 +11,9 @@ Your files, YouTube Music, radio from all over the world and synced lyrics, in o
 [![Downloads](https://img.shields.io/github/downloads/BigFatDeuce/Chud-Music/total?label=downloads&color=3fd8ff&labelColor=101216)](https://github.com/BigFatDeuce/Chud-Music/releases)
 ![Windows](https://img.shields.io/badge/Windows-10%20%7C%2011-1c5bcc?labelColor=101216)
 ![Linux](https://img.shields.io/badge/Linux-AppImage%20%7C%20deb%20%7C%20rpm-ffb21f?labelColor=101216)
+[![License: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-c6ff2e?labelColor=101216)](LICENSE)
 
-[**Download**](#download) · [Features](#features) · [Skins](#five-skins) · [Installation](#installation) · [Privacy](#privacy) · [Android: Chud Music More](https://github.com/BigFatDeuce/Chud-Music-More)
+[**Download**](#download) · [Features](#features) · [Skins](#five-skins) · [Installation](#installation) · [Privacy](#privacy) · [Build from source](#building-from-source) · [License](#license) · [Android: Chud Music More](https://github.com/BigFatDeuce/Chud-Music-More)
 
 <img src="images/home.png" alt="Chud Music: home page with the track playing" width="900">
 
@@ -151,6 +152,23 @@ Tested on Fedora 45 (AppImage, rpm, tar.gz). The deb is built from the same file
   GitHub (update check, can be turned off).
 - To animate its little spectrum while YouTube plays, the app measures the sound levels of the official player; playback is not changed and nothing is recorded.
 - App data: `%APPDATA%\Chud Music` on Windows, `~/.config/Chud Music` on Linux. The database is backed up before every change of its format.
+
+## Building from source
+
+You need [Node.js](https://nodejs.org) 22 or later and npm.
+
+```bash
+npm ci
+npm run dev          # run from source
+npm run dist:win     # Windows packages in dist/
+npm run dist:linux   # Linux packages in dist/ (on Linux)
+```
+
+FFmpeg is built separately by `scripts/build-ffmpeg.sh` (on Fedora, WSL works), into `build/vendor/`; without it the packages are built without FFmpeg, and formats Chromium cannot play (ALAC, WMA…) are not available. The tests (`npm run test:unit`, `npm run test:e2e`) need the test tracks made by `npm run test:fixtures` (needs `ffmpeg` on the PATH).
+
+## License
+
+© 2026 BigFatDeuce. The code is free software under the GPL-3.0-or-later (see [LICENSE](LICENSE)). Third-party components keep their own licences.
 
 ## Licenses and credits
 

@@ -1,0 +1,778 @@
+/* ───────────────────────────────────────────────────────────────────────────
+   Skins. Every component reads these tokens; a skin only redefines them, plus a
+   few structural overrides (bevels, gloss) at the bottom of each block.
+   Visualiser presets are a separate system and are not affected by skins.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+:root,
+[data-skin='nocturne'] {
+  /* Chud Nocturne — blue-black ink, neutral greys, the LCD lime as the only colour */
+  --bg-0: #07080d;
+  --bg-1: #0b0d14;
+  --bg-2: #11141c;
+  --bg-3: #1a1e28;
+  --bg-4: #252a36;
+  --line: rgb(238 240 245 / 0.07);
+  --line-strong: rgb(238 240 245 / 0.12);
+  --text-0: #eef0f5;
+  --text-1: #a3a9b8;
+  --text-2: #7a8296;
+  --accent: #c6ff2e;
+  --accent-ink: #0c1200;
+  --accent-soft: rgb(198 255 46 / 0.14);
+  --accent-2: #ff3fa4;
+  --danger: #e5484d;
+  /* Glow is reserved for the LCD readouts (phosphor); everything else gets depth from surfaces */
+  --glow: 0 0 0 transparent;
+
+  --lcd-bg: #070b04;
+  --lcd-fg: #c6ff2e;
+  --lcd-dim: rgb(198 255 46 / 0.22);
+  --lcd-glow: 0 0 8px rgb(198 255 46 / 0.6);
+
+  --radius-xl: 18px;
+  --radius-l: 14px;
+  --radius-m: 10px;
+  --radius-s: 7px;
+
+  --panel-bg: var(--bg-1);
+  --panel-border: 1px solid var(--line);
+  --panel-shadow: 0 1px 0 rgb(255 255 255 / 0.03) inset, 0 18px 40px -24px rgb(0 0 0 / 0.8);
+  --btn-bg: var(--bg-3);
+  --btn-bg-hover: var(--bg-4);
+  --btn-border: 1px solid var(--line);
+  --btn-shadow: 0 1px 0 rgb(255 255 255 / 0.05) inset;
+
+  /* Chinese, Japanese and Korean interfaces: bundled Noto Sans (OFL), the language's own first
+     (one Han character has different shapes in each); without them some Linux systems show boxes */
+  --font-cjk: 'Noto Sans SC Variable', 'Noto Sans JP Variable', 'Noto Sans KR Variable';
+  --font-ui: 'Inter Variable', var(--font-cjk), 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Space Grotesk Variable', 'Inter Variable', var(--font-cjk), sans-serif;
+  --font-lcd: 'VT323', 'Consolas', monospace;
+  --display-weight: 500;
+  --display-tracking: -0.02em;
+  --title-transform: none;
+
+  /* One easing curve and two durations for every transition */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --t-fast: 150ms;
+  --t-menu: 200ms;
+}
+
+[data-skin='cassette'] {
+  /* Cassette 98 — brushed charcoal, bevelled plastic, green LCD, amber highlights */
+  --bg-0: #18181c;
+  --bg-1: #26262c;
+  --bg-2: #2e2e35;
+  --bg-3: #393941;
+  --bg-4: #45454f;
+  --line: #121215;
+  --line-strong: #0a0a0c;
+  --text-0: #e9e9ee;
+  --text-1: #b2b2bd;
+  --text-2: #80808c;
+  --accent: #ffb21f;
+  --accent-ink: #1d1200;
+  --accent-soft: rgb(255 178 31 / 0.16);
+  --accent-2: #3dff6e;
+  --danger: #ff5a4f;
+  --glow: 0 0 0 transparent;
+
+  --lcd-bg: #030803;
+  --lcd-fg: #3dff6e;
+  --lcd-dim: rgb(61 255 110 / 0.18);
+  --lcd-glow: 0 0 6px rgb(61 255 110 / 0.7);
+
+  --radius-xl: 3px;
+  --radius-l: 3px;
+  --radius-m: 2px;
+  --radius-s: 2px;
+
+  --bevel-light: #5a5a66;
+  --bevel-dark: #0d0d10;
+  --panel-bg: repeating-linear-gradient(90deg, rgb(255 255 255 / 0.012) 0 1px, transparent 1px 3px), linear-gradient(180deg, #2d2d34, #232329);
+  --panel-border: 1px solid var(--bevel-dark);
+  --panel-shadow: inset 1px 1px 0 var(--bevel-light), inset -1px -1px 0 #18181c;
+  --btn-bg: linear-gradient(180deg, #4a4a54, #34343c);
+  --btn-bg-hover: linear-gradient(180deg, #55555f, #3c3c45);
+  --btn-border: 1px solid var(--bevel-dark);
+  --btn-shadow: inset 1px 1px 0 #6e6e7a, inset -1px -1px 0 #26262c;
+
+  --font-display: 'VT323', 'Consolas', var(--font-cjk), monospace;
+  --display-weight: 400;
+  --display-tracking: 0.02em;
+  --title-transform: uppercase;
+}
+
+[data-skin='aqua'] {
+  /* Aqua Glow — midnight blue glass, cyan light, glossy 2000s chrome */
+  --bg-0: #020a1c;
+  --bg-1: #06163a;
+  --bg-2: #0a1f4d;
+  --bg-3: #10306b;
+  --bg-4: #17408a;
+  --line: rgb(140 200 255 / 0.12);
+  --line-strong: rgb(140 200 255 / 0.25);
+  --text-0: #eef7ff;
+  --text-1: #a9c6e8;
+  --text-2: #6f8fb8;
+  --accent: #3fd8ff;
+  --accent-ink: #001520;
+  --accent-soft: rgb(63 216 255 / 0.16);
+  --accent-2: #9d7bff;
+  --danger: #ff6b8b;
+  --glow: 0 0 0 transparent;
+
+  --lcd-bg: #010814;
+  --lcd-fg: #7fe9ff;
+  --lcd-dim: rgb(127 233 255 / 0.2);
+  --lcd-glow: 0 0 10px rgb(63 216 255 / 0.8);
+
+  --radius-xl: 24px;
+  --radius-l: 18px;
+  --radius-m: 999px;
+  --radius-s: 10px;
+
+  --panel-bg: linear-gradient(180deg, rgb(255 255 255 / 0.09), rgb(255 255 255 / 0.02) 38%, rgb(255 255 255 / 0) 60%), rgb(10 31 77 / 0.72);
+  --panel-border: 1px solid rgb(140 200 255 / 0.18);
+  --panel-shadow: inset 0 1px 0 rgb(255 255 255 / 0.18), 0 20px 50px -20px rgb(0 0 0 / 0.7);
+  --btn-bg: linear-gradient(180deg, rgb(255 255 255 / 0.22), rgb(255 255 255 / 0.05) 50%, rgb(255 255 255 / 0.02) 51%, rgb(255 255 255 / 0.08));
+  --btn-bg-hover: linear-gradient(180deg, rgb(255 255 255 / 0.3), rgb(255 255 255 / 0.1) 50%, rgb(255 255 255 / 0.05) 51%, rgb(255 255 255 / 0.12));
+  --btn-border: 1px solid rgb(160 215 255 / 0.3);
+  --btn-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 2px 10px -2px rgb(0 0 0 / 0.5);
+
+  --display-weight: 500;
+  --display-tracking: -0.01em;
+}
+
+[data-skin='platine'] {
+  /* Platine — mid-light grey (darkened twice at the user's request), crisp dark text, cobalt accent, grey-green LCD.
+     Built for readability: every text token passes WCAG AA on the panels. */
+  color-scheme: light;
+  --bg-0: #a2a7b0;
+  --bg-1: #b4b8c0;
+  --bg-2: #aaafb7;
+  --bg-3: #9ea3ac;
+  --bg-4: #8f959f;
+  --line: rgb(20 24 33 / 0.13);
+  --line-strong: rgb(20 24 33 / 0.24);
+  --text-0: #0d0f12;
+  --text-1: #24292f;
+  --text-2: #363b43;
+  --accent: #103a80;
+  --accent-ink: #ffffff;
+  --accent-soft: rgb(16 58 128 / 0.16);
+  --accent-2: #c93a68;
+  --danger: #c32f36;
+  --glow: 0 0 0 transparent;
+
+  /* reflective LCD: dark segments on a grey-green glass, no phosphor glow */
+  --lcd-bg: #9aa688;
+  --lcd-fg: #1b2513;
+  --lcd-dim: rgb(27 37 19 / 0.13);
+  --lcd-glow: 0 0 0 transparent;
+
+  --radius-xl: 14px;
+  --radius-l: 11px;
+  --radius-m: 8px;
+  --radius-s: 6px;
+
+  --panel-bg: linear-gradient(180deg, #babec5, #b0b4bc);
+  --panel-border: 1px solid rgb(20 24 33 / 0.14);
+  --panel-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), 0 10px 28px -18px rgb(20 28 45 / 0.5);
+  --btn-bg: linear-gradient(180deg, #c4c7cd, #adb1b8);
+  --btn-bg-hover: linear-gradient(180deg, #cdd0d5, #b7bac0);
+  --btn-border: 1px solid rgb(20 24 33 / 0.16);
+  --btn-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 1px 2px rgb(20 30 50 / 0.15);
+
+  --display-weight: 600;
+  --display-tracking: -0.02em;
+}
+[data-skin='platine'] .tab:hover {
+  background: rgb(20 24 33 / 0.04);
+}
+[data-skin='platine'] .lcd-screen {
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.18), transparent 60%), var(--lcd-bg);
+  box-shadow: inset 0 1px 3px rgb(0 0 0 / 0.28), inset 0 -1px 0 rgb(255 255 255 / 0.4);
+  border-color: rgb(20 24 33 / 0.28);
+}
+/* The visualiser's preset name sits on dark glass over the picture: keep it bright there. */
+[data-skin='platine'] .viz-preset b {
+  color: #dff28a;
+}
+/* Badges laid over artwork keep a dark chip: give them light text in this skin. */
+[data-skin='platine'] .living-cover-label .badge {
+  color: #ffffff;
+}
+
+[data-skin='signal'] {
+  /* Signal — graphite and black, an old broadcast monitor: off-white phosphor text, a signal-red
+     accent with a cyan ghost (the RGB split of a misaligned tube). Glitches stay small and rare. */
+  /* a lifted black (user request, 7 nov.): graphite rather than pitch black */
+  --bg-0: #0f0f12;
+  --bg-1: #16161a;
+  --bg-2: #1d1d22;
+  --bg-3: #27272d;
+  --bg-4: #333339;
+  --line: rgb(232 230 227 / 0.07);
+  --line-strong: rgb(232 230 227 / 0.13);
+  --text-0: #e8e6e3;
+  --text-1: #a3a09b;
+  --text-2: #7c7973;
+  --accent: #ff2e5b;
+  --accent-ink: #12020a;
+  --accent-soft: rgb(255 46 91 / 0.14);
+  --accent-2: #2ef2ff;
+  --danger: #ff5a4f;
+  --glow: 0 0 0 transparent;
+
+  --lcd-bg: #0a0a0c;
+  --lcd-fg: #e8e6e3;
+  --lcd-dim: rgb(232 230 227 / 0.12);
+  /* chromatic fringe: red one way, cyan the other */
+  --lcd-glow: -1px 0 0 rgb(255 46 91 / 0.55), 1px 0 0 rgb(46 242 255 / 0.55);
+
+  --radius-xl: 6px;
+  --radius-l: 5px;
+  --radius-m: 4px;
+  --radius-s: 3px;
+
+  --panel-bg: var(--bg-1);
+  --panel-border: 1px solid var(--line);
+  --panel-shadow: 0 1px 0 rgb(255 255 255 / 0.02) inset, 0 18px 40px -24px rgb(0 0 0 / 0.9);
+  --btn-bg: var(--bg-3);
+  --btn-bg-hover: var(--bg-4);
+  --btn-border: 1px solid var(--line);
+  --btn-shadow: none;
+
+  --display-weight: 500;
+  --display-tracking: 0.01em;
+}
+/* the interface language picks its own CJK font first */
+:root:lang(ja) {
+  --font-cjk: 'Noto Sans JP Variable', 'Noto Sans SC Variable', 'Noto Sans KR Variable';
+}
+:root:lang(ko) {
+  --font-cjk: 'Noto Sans KR Variable', 'Noto Sans SC Variable', 'Noto Sans JP Variable';
+}
+/* no scanlines over the window any more (0.4.0): they striped the covers */
+/* the active tab and nav item carry the RGB split */
+[data-skin='signal'] .tab.active,
+[data-skin='signal'] .nav-item.active {
+  text-shadow: -1px 0 rgb(255 46 91 / 0.45), 1px 0 rgb(46 242 255 / 0.45);
+}
+/* a page title loses the signal for 2 frames, every ~14 s (and never with effects off) */
+[data-skin='signal'][data-effects='full'] .page-title {
+  animation: signal-jitter 14s steps(1) infinite;
+}
+@keyframes signal-jitter {
+  0%, 96.9%, 100% { transform: none; clip-path: none; text-shadow: none; }
+  97% { transform: translateX(-2px); clip-path: inset(10% 0 55% 0); text-shadow: 2px 0 var(--accent), -2px 0 var(--accent-2); }
+  97.4% { transform: translateX(3px); clip-path: inset(48% 0 12% 0); text-shadow: -2px 0 var(--accent), 2px 0 var(--accent-2); }
+}
+
+/* ── player-bar buttons, Signal: phosphor glyphs on a dark tube ──────────────────────────────
+   always: an RGB split on hover, a bracketed square play button, the volume as a segmented
+   meter. Effets = Complets: a hover makes the glyph lose sync for a few frames, a press tears
+   it, the play button breathes while playing and its corners slip now and then. */
+[data-skin='signal'] .icon-btn {
+  border-radius: 3px;
+  transition: color var(--t-fast) var(--ease), background var(--t-fast) var(--ease), filter var(--t-fast) var(--ease);
+}
+[data-skin='signal'] .icon-btn:hover:not(:disabled) {
+  background: rgb(232 230 227 / 0.06);
+  filter: drop-shadow(-1.5px 0 rgb(255 46 91 / 0.85)) drop-shadow(1.5px 0 rgb(46 242 255 / 0.85));
+}
+[data-skin='signal'] .icon-btn.on {
+  color: var(--accent);
+  filter: drop-shadow(0 0 4px rgb(255 46 91 / 0.45));
+}
+/* "on": a thin tracking bar instead of the dot */
+[data-skin='signal'] .icon-btn.on::after {
+  width: 14px;
+  height: 2px;
+  border-radius: 0;
+  box-shadow: -1px 0 0 var(--accent-2);
+}
+[data-skin='signal'] .play-btn,
+[data-skin='signal'] .play-fab,
+[data-skin='signal'] .album-play {
+  position: relative;
+  border-radius: 4px;
+  background: #0b0b0e;
+  color: var(--text-0);
+  border: 1px solid rgb(232 230 227 / 0.22);
+  box-shadow: -1.5px 0 0 rgb(255 46 91 / 0.75), 1.5px 0 0 rgb(46 242 255 / 0.75), inset 0 0 12px rgb(255 46 91 / 0.12);
+  transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
+}
+/* viewfinder corners */
+[data-skin='signal'] .play-btn::before,
+[data-skin='signal'] .play-fab::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--accent), var(--accent)) top left / 7px 1.5px,
+    linear-gradient(var(--accent), var(--accent)) top left / 1.5px 7px,
+    linear-gradient(var(--accent-2), var(--accent-2)) bottom right / 7px 1.5px,
+    linear-gradient(var(--accent-2), var(--accent-2)) bottom right / 1.5px 7px;
+  background-repeat: no-repeat;
+  opacity: 0.55;
+  transition: inset var(--t-fast) var(--ease), opacity var(--t-fast) var(--ease);
+}
+[data-skin='signal'] .play-btn:hover:not(:disabled),
+[data-skin='signal'] .play-fab:hover:not(:disabled),
+[data-skin='signal'] .album-play:hover {
+  border-color: rgb(232 230 227 / 0.45);
+  box-shadow: -2.5px 0 0 rgb(255 46 91 / 0.9), 2.5px 0 0 rgb(46 242 255 / 0.9), inset 0 0 16px rgb(255 46 91 / 0.25);
+}
+[data-skin='signal'] .play-btn:hover:not(:disabled)::before,
+[data-skin='signal'] .play-fab:hover:not(:disabled)::before {
+  inset: -3px;
+  opacity: 1;
+}
+[data-skin='signal'] .play-btn svg,
+[data-skin='signal'] .play-fab svg,
+[data-skin='signal'] .album-play svg {
+  filter: drop-shadow(-1px 0 rgb(255 46 91 / 0.7)) drop-shadow(1px 0 rgb(46 242 255 / 0.7));
+}
+/* volume: a segmented level meter, the thumb a phosphor beam */
+[data-skin='signal'] .volume .slider-track {
+  height: 7px;
+  border-radius: 0;
+  background: repeating-linear-gradient(90deg, rgb(232 230 227 / 0.1) 0 4px, transparent 4px 6px);
+}
+[data-skin='signal'] .volume .slider-fill {
+  border-radius: 0;
+  background: repeating-linear-gradient(90deg, var(--text-0) 0 4px, transparent 4px 6px);
+  filter: drop-shadow(-1px 0 rgb(255 46 91 / 0.8)) drop-shadow(1px 0 rgb(46 242 255 / 0.8));
+}
+[data-skin='signal'] .volume .slider:hover .slider-track,
+[data-skin='signal'] .volume .slider.dragging .slider-track {
+  transform: none;
+}
+[data-skin='signal'] .volume .slider-thumb {
+  width: 3px;
+  height: 14px;
+  margin-left: -1.5px;
+  border-radius: 0;
+  background: var(--text-0);
+  box-shadow: -2px 0 0 var(--accent), 2px 0 0 var(--accent-2), 0 0 8px rgb(232 230 227 / 0.7);
+}
+[data-skin='signal'][data-effects='full'] .icon-btn:hover:not(:disabled) svg,
+[data-skin='signal'][data-effects='full'] .play-fab:hover:not(:disabled) svg,
+[data-skin='signal'][data-effects='full'] .btn:hover:not(:disabled) svg {
+  animation: signal-btn-sync 0.38s steps(1) 1;
+}
+[data-skin='signal'][data-effects='full'] .icon-btn:active:not(:disabled) svg,
+[data-skin='signal'][data-effects='full'] .play-btn:active:not(:disabled) svg,
+[data-skin='signal'][data-effects='full'] .play-fab:active:not(:disabled) svg,
+[data-skin='signal'][data-effects='full'] .album-play:active svg,
+[data-skin='signal'][data-effects='full'] .btn:active:not(:disabled) svg {
+  animation: signal-btn-tear 0.22s steps(1) 1;
+}
+[data-skin='signal'][data-effects='full'] .play-btn[data-playing] {
+  animation: signal-play-breathe 2.8s ease-in-out infinite;
+}
+[data-skin='signal'][data-effects='full'] .play-btn[data-playing]::before {
+  animation: signal-play-slip 7s steps(1) infinite;
+}
+[data-skin='signal'] .btn {
+  transition: background var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+[data-skin='signal'] .btn:hover:not(:disabled) {
+  box-shadow: -1.5px 0 0 rgb(255 46 91 / 0.7), 1.5px 0 0 rgb(46 242 255 / 0.7);
+}
+[data-skin='signal'] .btn.primary {
+  background: #0b0b0e;
+  color: var(--text-0);
+  border: 1px solid rgb(232 230 227 / 0.22);
+  box-shadow: -1.5px 0 0 rgb(255 46 91 / 0.75), 1.5px 0 0 rgb(46 242 255 / 0.75), inset 0 0 12px rgb(255 46 91 / 0.12);
+}
+[data-skin='signal'] .btn.primary:hover:not(:disabled) {
+  background: #121216;
+  box-shadow: -2.5px 0 0 rgb(255 46 91 / 0.9), 2.5px 0 0 rgb(46 242 255 / 0.9), inset 0 0 16px rgb(255 46 91 / 0.25);
+}
+/* the cover play buttons stay round enough to read over a picture */
+[data-skin='signal'] .album-play {
+  position: absolute;
+  background: rgb(11 11 14 / 0.88);
+  transition: opacity var(--t-menu) var(--ease), transform var(--t-menu) var(--ease), box-shadow var(--t-fast) var(--ease);
+}
+@keyframes signal-btn-sync {
+  0% { transform: translate(-2px, 0); clip-path: inset(0 0 45% 0); }
+  25% { transform: translate(2px, 1px); clip-path: inset(40% 0 0 0); }
+  50% { transform: translate(-1px, 0); clip-path: none; }
+  75% { transform: translate(1px, 0); }
+  100% { transform: none; }
+}
+@keyframes signal-btn-tear {
+  0% { transform: translateX(3px) skewX(-8deg); clip-path: inset(20% 0 30% 0); }
+  50% { transform: translateX(-2px); clip-path: inset(55% 0 0 0); }
+  100% { transform: none; clip-path: none; }
+}
+@keyframes signal-play-breathe {
+  0%, 100% { box-shadow: -1.5px 0 0 rgb(255 46 91 / 0.75), 1.5px 0 0 rgb(46 242 255 / 0.75), inset 0 0 10px rgb(255 46 91 / 0.1), 0 0 0 rgb(255 46 91 / 0); }
+  50% { box-shadow: -2px 0 0 rgb(255 46 91 / 0.9), 2px 0 0 rgb(46 242 255 / 0.9), inset 0 0 16px rgb(255 46 91 / 0.28), 0 0 14px rgb(255 46 91 / 0.25); }
+}
+@keyframes signal-play-slip {
+  0%, 93%, 100% { transform: none; }
+  94% { transform: translateX(-3px); }
+  95.5% { transform: translateX(2px) scaleY(1.06); }
+  97% { transform: translateX(-1px); }
+}
+
+/* the cover of what is playing (living cover, player bar) skips for a few frames every ~11 s;
+   never the YouTube player (data-playing is only set on a cover picture) */
+[data-skin='signal'][data-effects='full'] .living-cover[data-playing] .living-cover-art,
+[data-skin='signal'][data-effects='full'] .np-cover[data-playing] > * {
+  animation: signal-cover-glitch 11s steps(1) infinite;
+}
+[data-skin='signal'][data-effects='full'] .np-cover[data-playing] > * {
+  animation-delay: -4s;
+}
+@keyframes signal-cover-glitch {
+  0%, 95.4%, 100% { transform: none; clip-path: none; filter: none; }
+  95.5% { transform: translateX(-4%); clip-path: inset(12% 0 58% 0); filter: drop-shadow(3px 0 rgb(46 242 255 / 0.8)) drop-shadow(-3px 0 rgb(255 46 91 / 0.8)); }
+  96.2% { transform: translateX(3%); clip-path: inset(46% 0 18% 0); filter: drop-shadow(-3px 0 rgb(46 242 255 / 0.8)) drop-shadow(3px 0 rgb(255 46 91 / 0.8)); }
+  96.9% { transform: translateX(-1%); clip-path: none; filter: drop-shadow(2px 0 rgb(255 46 91 / 0.7)) saturate(1.6); }
+  97.5% { transform: none; filter: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-skin='signal'] .icon-btn svg,
+  [data-skin='signal'] .play-btn,
+  [data-skin='signal'] .play-btn::before,
+  [data-skin='signal'] .play-btn svg,
+  [data-skin='signal'] .play-fab svg,
+  [data-skin='signal'] .btn svg,
+  [data-skin='signal'] .living-cover-art,
+  [data-skin='signal'] .np-cover > * {
+    animation: none !important;
+  }
+}
+
+/* tabs not open: a raised graphite chip with a hairline, readable text — distinct from the
+   background without competing with the open tab (which keeps the RGB split) */
+[data-skin='signal'] .tab:not(.active) {
+  color: var(--text-1);
+  background: var(--bg-2);
+  box-shadow: inset 0 1px 0 var(--line-strong), inset 1px 0 0 var(--line), inset -1px 0 0 var(--line);
+}
+[data-skin='signal'] .tab:not(.active):hover {
+  color: var(--text-0);
+  background: var(--bg-3);
+}
+
+/* ── seek bar, Signal: a broadcast tape ──────────────────────────────────────────────────────
+   always: tick marks on the track (a tape counter ruler), the fill with its RGB split, the
+   playhead as a bright phosphor beam.
+   Effets = Complets, while playing: a scan line runs along the fill, the beam flickers, and
+   every ~9 s the fill tears for a few frames (signal loss). Transforms/opacity only. */
+[data-skin='signal'] .seek-row .slider-track {
+  height: 6px;
+  border-radius: 1px;
+  background:
+    repeating-linear-gradient(90deg, rgb(232 230 227 / 0.10) 0 1px, transparent 1px 10%),
+    repeating-linear-gradient(90deg, rgb(232 230 227 / 0.05) 0 1px, transparent 1px 2.5%),
+    var(--bg-4);
+  overflow: visible;
+}
+[data-skin='signal'] .seek-row .slider-buffer {
+  background: rgb(232 230 227 / 0.10);
+}
+[data-skin='signal'] .seek-row .slider-fill {
+  overflow: hidden;
+  background: linear-gradient(90deg, rgb(255 46 91 / 0.55), var(--accent));
+  box-shadow: -1px 0 0 rgb(46 242 255 / 0.5), 0 1px 0 rgb(46 242 255 / 0.35), 0 -1px 0 rgb(255 46 91 / 0.35);
+}
+/* the playhead: a thin phosphor beam taller than the track */
+[data-skin='signal'] .seek-row .slider-fill::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #fff;
+  box-shadow: 0 0 6px 1px rgb(255 255 255 / 0.7), 2px 0 0 rgb(46 242 255 / 0.8);
+}
+[data-skin='signal'] .seek-row .slider-track::after {
+  content: '';
+  position: absolute;
+  left: var(--pct);
+  top: -4px;
+  bottom: -4px;
+  width: 1px;
+  margin-left: -1px;
+  background: rgb(255 255 255 / 0.85);
+  box-shadow: -1px 0 0 rgb(255 46 91 / 0.7), 1px 0 0 rgb(46 242 255 / 0.7), 0 0 8px rgb(255 255 255 / 0.5);
+  pointer-events: none;
+}
+[data-skin='signal'] .seek-row .slider-thumb {
+  width: 10px;
+  height: 16px;
+  margin-left: -5px;
+  border-radius: 1px;
+  background: var(--text-0);
+  box-shadow: -2px 0 0 rgb(255 46 91 / 0.75), 2px 0 0 rgb(46 242 255 / 0.75);
+}
+[data-skin='signal'] .seek-row .slider:hover .slider-track,
+[data-skin='signal'] .seek-row .slider.dragging .slider-track {
+  transform: scaleY(1.25);
+}
+/* scan line along the fill (sized on the fill, so it is seen at any position) */
+[data-skin='signal'][data-effects='full'] .seek-row .slider-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0 38%, rgb(255 255 255 / 0.15) 44%, rgb(255 255 255 / 0.85) 50%, rgb(46 242 255 / 0.5) 52%, transparent 58% 100%);
+  transform: translateX(-100%);
+  opacity: 0;
+}
+[data-skin='signal'][data-effects='full'] .seek-row[data-playing] .slider-fill::after {
+  opacity: 1;
+  animation: signal-scan 2.4s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+/* the fill glows like a lit tube while playing */
+[data-skin='signal'][data-effects='full'] .seek-row[data-playing] .slider-fill {
+  box-shadow: -1px 0 0 rgb(46 242 255 / 0.5), 0 1px 0 rgb(46 242 255 / 0.35), 0 -1px 0 rgb(255 46 91 / 0.35), 0 0 10px rgb(255 46 91 / 0.45);
+}
+[data-skin='signal'][data-effects='full'] .seek-row[data-playing] .slider-track::after {
+  animation: signal-beam 3.1s steps(1) infinite;
+}
+[data-skin='signal'][data-effects='full'] .seek-row[data-playing] .slider-fill {
+  animation: signal-tear 9s steps(1) infinite;
+}
+@keyframes signal-scan {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100%); }
+}
+@keyframes signal-beam {
+  0%, 100% { opacity: 1; }
+  41% { opacity: 0.35; }
+  42% { opacity: 1; }
+  77% { opacity: 0.55; }
+  78% { opacity: 1; }
+}
+@keyframes signal-tear {
+  0%, 95.9%, 100% { transform: none; clip-path: none; }
+  96% { transform: translateX(-4px); clip-path: inset(0 0 50% 0); }
+  96.6% { transform: translateX(3px); clip-path: inset(40% 0 0 0); }
+  97.2% { transform: translateX(-1px); clip-path: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-skin='signal'] .seek-row .slider-fill,
+  [data-skin='signal'] .seek-row .slider-fill::after,
+  [data-skin='signal'] .seek-row .slider-track::after {
+    animation: none !important;
+  }
+}
+.np-sweep {
+  position: relative;
+  min-width: 0;
+}
+
+/* ── Signal: the Home clock is a broadcast timecode (components/SignalClock.tsx) ──────────
+   still with effects reduced/off or reduced motion; bursts of glitch every ~7 s otherwise. */
+.signal-clock {
+  overflow: hidden;
+  gap: 4px;
+  padding: 7px 14px 8px;
+}
+.signal-clock .sc-top {
+  display: flex;
+  justify-content: space-between;
+  justify-self: stretch;
+  gap: 16px;
+  font: 11px/1 var(--font-lcd);
+  letter-spacing: 0.16em;
+  color: var(--text-2);
+}
+.signal-clock .sc-rec {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--accent);
+}
+.signal-clock .sc-rec i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+.signal-clock .sc-time {
+  position: relative;
+  display: flex;
+}
+.signal-clock .sc-sec {
+  opacity: 0.55;
+}
+/* the red and cyan ghosts of the readout: only seen during a burst */
+.signal-clock .sc-time::before,
+.signal-clock .sc-time::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  text-shadow: none;
+}
+.signal-clock .sc-time::before {
+  color: var(--accent);
+}
+.signal-clock .sc-time::after {
+  color: var(--accent-2);
+}
+.signal-clock .sc-date {
+  display: grid;
+}
+.signal-clock .sc-date > span {
+  grid-area: 1 / 1;
+  justify-self: start;
+  white-space: nowrap;
+}
+.signal-clock .sc-date-full {
+  visibility: hidden;
+}
+.signal-clock .sc-caret {
+  color: var(--accent);
+  animation: sc-blink 0.5s steps(1) infinite;
+}
+/* the roll bar of a slightly unsynced monitor, drifting down */
+.signal-clock .sc-roll {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 45%;
+  background: linear-gradient(transparent, rgb(232 230 227 / 0.06) 45%, rgb(46 242 255 / 0.05) 55%, transparent);
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+.signal-clock.live .sc-roll {
+  opacity: 1;
+  animation: sc-roll 6.5s linear infinite;
+}
+.signal-clock.live .sc-rec i,
+.signal-clock.live .sc-colon {
+  animation: sc-blink 1s steps(1) infinite;
+}
+.signal-clock.live .sc-time {
+  animation: sc-shake 7s steps(1) infinite;
+}
+.signal-clock.live .sc-time::before {
+  animation: sc-ghost-red 7s steps(1) infinite;
+}
+.signal-clock.live .sc-time::after {
+  animation: sc-ghost-cyan 7s steps(1) infinite;
+}
+.signal-clock.live .sc-date-typed {
+  animation: sc-date-flick 11s steps(1) infinite;
+}
+@keyframes sc-blink {
+  50% {
+    opacity: 0.15;
+  }
+}
+@keyframes sc-roll {
+  to {
+    transform: translateY(240%);
+  }
+}
+@keyframes sc-shake {
+  0%, 89.9%, 96%, 100% {
+    transform: translateY(1px);
+  }
+  90% {
+    transform: translate(3px, 1px) skewX(-8deg);
+  }
+  91.5% {
+    transform: translate(-2px, 1px);
+  }
+  93% {
+    transform: translate(1px, 0) skewX(4deg);
+  }
+  94.5% {
+    transform: translate(-1px, 2px);
+  }
+}
+@keyframes sc-ghost-red {
+  0%, 89.9%, 96%, 100% {
+    opacity: 0;
+    transform: none;
+    clip-path: inset(0);
+  }
+  90% {
+    opacity: 0.9;
+    transform: translateX(-5px);
+    clip-path: inset(8% 0 58% 0);
+  }
+  91.5% {
+    opacity: 0.85;
+    transform: translateX(4px);
+    clip-path: inset(62% 0 6% 0);
+  }
+  93% {
+    opacity: 0.7;
+    transform: translateX(-3px);
+    clip-path: inset(34% 0 38% 0);
+  }
+  94.5% {
+    opacity: 0.5;
+    transform: translateX(2px);
+    clip-path: inset(0 0 80% 0);
+  }
+}
+@keyframes sc-ghost-cyan {
+  0%, 89.9%, 96%, 100% {
+    opacity: 0;
+    transform: none;
+    clip-path: inset(0);
+  }
+  90% {
+    opacity: 0.8;
+    transform: translateX(5px);
+    clip-path: inset(48% 0 22% 0);
+  }
+  91.5% {
+    opacity: 0.8;
+    transform: translateX(-4px);
+    clip-path: inset(12% 0 64% 0);
+  }
+  93% {
+    opacity: 0.6;
+    transform: translateX(3px);
+    clip-path: inset(70% 0 4% 0);
+  }
+  94.5% {
+    opacity: 0.4;
+    transform: translateX(-2px);
+    clip-path: inset(40% 0 40% 0);
+  }
+}
+@keyframes sc-date-flick {
+  0%, 61.9%, 63.5%, 100% {
+    opacity: 1;
+    transform: none;
+  }
+  62% {
+    opacity: 0.35;
+    transform: translateX(2px);
+  }
+  62.8% {
+    opacity: 0.8;
+    transform: translateX(-1px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .signal-clock *,
+  .signal-clock *::before,
+  .signal-clock *::after,
+  .signal-clock .sc-time::before,
+  .signal-clock .sc-time::after {
+    animation: none !important;
+  }
+}
