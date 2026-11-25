@@ -58,6 +58,7 @@ const thumbReady = new Set<string>(); // copies known to exist
 const noThumb = new Set<string>(); // originals already small enough (or unreadable): never retried
 const thumbQueue = new Map<string, { path: string; size: number }>();
 let thumbBusy = false;
+let thumbGen = 0; // changes when the cache is cleaned: copies asked for before are not made
 
 // Covers and playlist pictures have their own names in the thumbnail folder ('pl-' for the latter),
 // so a small copy of one can never be served for the other.
@@ -92,8 +93,9 @@ function pumpThumbs(): void {
   const [out, { path, size }] = next.value;
   thumbQueue.delete(out);
   thumbBusy = true;
+  const gen = thumbGen;
   setTimeout(() => {
-    makeThumb(path, size, out);
+    if (gen === thumbGen) makeThumb(path, size, out);
     thumbBusy = false;
     pumpThumbs();
   }, 15);
@@ -118,6 +120,8 @@ function thumbnail(path: string, size: number, playlist: boolean): string | null
 
 /** Forget what is known about the copies (covers removed or replaced). */
 export function forgetThumbs(): void {
+  thumbGen++; // the copy about to be made is dropped too: it would come back after the cleaning
+  thumbQueue.clear();
   thumbReady.clear();
   noThumb.clear();
 }

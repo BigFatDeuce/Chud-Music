@@ -573,6 +573,7 @@ const fr = {
   "upd.githubStatus": "GitHub a répondu {status}",
   "net.github": "GitHub est injoignable (hors ligne ?)",
   "upd.downloadFailed": "Téléchargement impossible : {error}. Vous pouvez la télécharger depuis GitHub.",
+  "upd.unsigned": "La version téléchargée ne porte pas la signature de Chud Music : elle n’a pas été installée. Vous pouvez la télécharger depuis GitHub.",
   "net.ytm": "YouTube Music est injoignable. Vérifiez la connexion Internet.",
   "yt.unexpected": "Réponse inattendue de YouTube Music ({detail})",
   "yt.expired": "Résultats expirés",

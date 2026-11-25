@@ -573,6 +573,7 @@ const messages: Catalog = {
   "upd.githubStatus": "GitHub responded {status}",
   "net.github": "GitHub cannot be reached (offline?)",
   "upd.downloadFailed": "Download failed: {error}. You can download it from GitHub.",
+  "upd.unsigned": "The downloaded version does not carry Chud Music's signature: it was not installed. You can download it from GitHub.",
   "net.ytm": "YouTube Music cannot be reached. Check the Internet connection.",
   "yt.unexpected": "Unexpected response from YouTube Music ({detail})",
   "yt.expired": "Results expired",

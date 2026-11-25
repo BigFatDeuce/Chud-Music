@@ -1589,25 +1589,46 @@ button.np-stage-kicker:hover {
   flex-direction: column;
   gap: 2px;
 }
+/* whole lines: they wrap (at most 2, the current one 3) instead of ending in "…" */
 .np-lyric {
-  display: block;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   max-width: 100%;
   text-align: left;
   overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
   color: var(--text-2);
-  font: 500 14px/1.45 var(--font-ui);
+  font: 500 14px/1.4 var(--font-ui);
 }
 .np-lyric.empty {
   height: 20px;
 }
 .np-lyric.on {
+  -webkit-line-clamp: 3;
   color: var(--text-0);
-  font-size: 21px;
+  font-size: clamp(16px, 4.8cqi, 21px);
   font-weight: 650;
   letter-spacing: -0.01em;
   line-height: 1.3;
+}
+/* not enough room (data-fit set by DockStage): the previous line goes, then the next one,
+   then the current one shrinks */
+.np-lyrics:not([data-fit='0']) .np-lyric.prev,
+.np-lyrics:is([data-fit='2'], [data-fit='3'], [data-fit='4']) .np-lyric.next {
+  display: none;
+}
+.np-lyrics:is([data-fit='2'], [data-fit='3'], [data-fit='4']) .np-lyric.on {
+  -webkit-line-clamp: 5; /* alone: it may take the room of the others */
+}
+.np-lyrics:is([data-fit='3'], [data-fit='4']) .np-lyric.on {
+  font-size: 16px;
+  line-height: 1.25;
+}
+.np-lyrics[data-fit='4'] .np-lyric.on {
+  font-size: 14px;
 }
 .np-lyric:not(:disabled):hover {
   color: var(--text-1);

@@ -573,6 +573,7 @@ const messages: Catalog = {
   "upd.githubStatus": "GitHub 응답: {status}",
   "net.github": "GitHub에 연결할 수 없습니다(오프라인?)",
   "upd.downloadFailed": "다운로드할 수 없음: {error}. GitHub에서 다운로드할 수 있습니다.",
+  "upd.unsigned": "다운로드한 버전에 Chud Music 서명이 없어 설치하지 않았습니다. GitHub에서 다운로드할 수 있습니다.",
   "net.ytm": "YouTube Music에 연결할 수 없습니다. 인터넷 연결을 확인하세요.",
   "yt.unexpected": "YouTube Music의 예기치 않은 응답({detail})",
   "yt.expired": "결과가 만료되었습니다",

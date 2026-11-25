@@ -573,6 +573,7 @@ const messages: Catalog = {
   "upd.githubStatus": "GitHub respondió {status}",
   "net.github": "No se puede contactar con GitHub (¿sin conexión?)",
   "upd.downloadFailed": "Descarga imposible: {error}. Puedes descargarla desde GitHub.",
+  "upd.unsigned": "La versión descargada no lleva la firma de Chud Music: no se ha instalado. Puedes descargarla desde GitHub.",
   "net.ytm": "No se puede contactar con YouTube Music. Comprueba la conexión a Internet.",
   "yt.unexpected": "Respuesta inesperada de YouTube Music ({detail})",
   "yt.expired": "Resultados caducados",

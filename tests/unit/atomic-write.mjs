@@ -78,6 +78,23 @@ try {
     threw = true;
   }
   check('an impossible write is reported', threw);
+  // a truncated picture already under the name (left by a version before 1.4.1) must not hide a
+  // write that failed (here: data that cannot be written)
+  const broken = join(dir, 'broken.jpg');
+  writeFileSync(broken, 'tru');
+  let asyncThrew = false;
+  let syncThrew = false;
+  try {
+    await writeFileAtomic(broken, { not: 'data' });
+  } catch {
+    asyncThrew = true;
+  }
+  try {
+    writeFileAtomicSync(broken, { not: 'data' });
+  } catch {
+    syncThrew = true;
+  }
+  check('a failed write is reported even with an incomplete file already there', asyncThrew && syncThrew, `async ${asyncThrew}, sync ${syncThrew}`);
 } finally {
   rmSync(dir, { recursive: true, force: true });
 }

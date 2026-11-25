@@ -4,6 +4,7 @@
 // Authentication: the GitHub sign-in already known to Git (Git Credential Manager asks the person
 // to sign in, in GitHub's own window, if needed). The token is only sent to api.github.com.
 import { execFileSync } from 'node:child_process';
+import { createPublicKey, verify } from 'node:crypto';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { basename, join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -19,6 +20,10 @@ const dist = (f) => join(root, 'dist', f);
 const assets = [
   dist(`Chud-Music-Setup-${version}.exe`),
   dist(`Chud-Music-Setup-${version}.exe.blockmap`),
+  // our own signatures of the two in-app installers (scripts/sign-release.mjs): without them the
+  // installed copies refuse the update
+  dist(`Chud-Music-Setup-${version}.exe.sig`),
+  dist(`Chud-Music-${version}-x86_64.AppImage.sig`),
   dist('latest.yml'),
   dist(`Chud-Music-${version}-Portable.exe`),
   dist(`Chud-Music-${version}-win-x64.zip`),
@@ -34,6 +39,12 @@ for (const a of assets) if (!existsSync(a)) throw new Error(`missing: ${a}`);
 for (const [yml, file] of [['latest.yml', `Chud-Music-Setup-${version}.exe`], ['latest-linux.yml', `Chud-Music-${version}-x86_64.AppImage`]]) {
   const y = readFileSync(dist(yml), 'utf8');
   if (!y.includes(`version: ${version}`) || !y.includes(file)) throw new Error(`${yml} does not describe ${file}`);
+  // the signature must be the one of this build (a .sig left from an earlier build would make
+  // every installed copy refuse the update)
+  const pem = /-----BEGIN PUBLIC KEY-----[\s\S]+?-----END PUBLIC KEY-----/.exec(readFileSync(join(root, 'src', 'main', 'update-signature.ts'), 'utf8'))?.[0];
+  const sha512 = /^sha512: *(\S+)/m.exec(y)?.[1];
+  const sig = Buffer.from(readFileSync(dist(`${file}.sig`), 'utf8').trim(), 'base64');
+  if (!pem || !sha512 || !verify(null, Buffer.from(`chud-music-update:v1\n${version}\n${sha512}\n`), createPublicKey(pem), sig)) throw new Error(`${file}.sig does not sign this build: run scripts/sign-release.mjs`);
 }
 
 const cred = execFileSync('git', ['credential', 'fill'], { input: 'protocol=https\nhost=github.com\n\n', encoding: 'utf8', stdio: ['pipe', 'pipe', 'inherit'] });

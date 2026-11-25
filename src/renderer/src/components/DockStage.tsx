@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { motion } from 'motion/react';
 import { ArrowUpRight, LoaderCircle, MicVocal } from 'lucide-react';
 import type { LyricsResult, Track, TrackStats } from '@shared/types';
@@ -80,6 +80,27 @@ function SyncedLyrics({ lrc }: { lrc: string }) {
     const id = setInterval(tick, 200);
     return () => clearInterval(id);
   }, [lines]);
+  // the lines wrap instead of being cut; when the strip is too small for them, give up the
+  // previous line, then the next one, then make the current one smaller (data-fit 0 → 4)
+  const box = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    const fit = () => {
+      const set = el.firstElementChild as HTMLElement | null;
+      if (!set) return;
+      // too tall for the strip, or a line cut by its line limit
+      const short = () =>
+        set.offsetHeight > el.clientHeight + 1 || [...set.children].some((l) => (l as HTMLElement).offsetParent && l.scrollHeight > l.clientHeight + 1);
+      let level = 0;
+      el.dataset.fit = '0';
+      while (level < 4 && short()) el.dataset.fit = String(++level);
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [active, lines]);
   const line = (i: number, cls: string) => {
     const l: LyricLine | undefined = lines[i];
     // before the first line, the one being "sung" is the intro (♪)
@@ -93,7 +114,7 @@ function SyncedLyrics({ lrc }: { lrc: string }) {
   return (
     <>
       <Kicker>{tr('lyrics.synced')}</Kicker>
-      <div className="np-lyrics">
+      <div className="np-lyrics" ref={box}>
         {/* each new line slides in; no exit animation either */}
         <motion.div key={active} className="np-lyrics-set" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.28, ease: EASE }}>
             {line(active - 1, 'prev')}

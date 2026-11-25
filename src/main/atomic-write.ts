@@ -4,28 +4,44 @@
 // writing the same cover at the same moment) must never leave a truncated picture under the final
 // name: it would be shown broken for ever. Only node:fs: tests/unit/atomic-write.mjs loads it as
 // it is.
-import { existsSync, renameSync, rmSync, writeFileSync } from 'node:fs';
+import { renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { rename, rm, writeFile } from 'node:fs/promises';
 
 let seq = 0;
 const partOf = (path: string) => `${path}.${process.pid}-${++seq}-${Math.random().toString(36).slice(2, 8)}.part`;
 
+/** A failed rename is harmless only when the whole data was written and the file already under the
+ *  name is a whole copy (same size: the names come from the content). A truncated file left there
+ *  by an older version, or a write that failed (disk full…), is reported, not hidden. */
+function sameFileThere(path: string, data: Uint8Array | string): boolean {
+  try {
+    return statSync(path).size === (typeof data === 'string' ? Buffer.byteLength(data) : data.byteLength);
+  } catch {
+    return false;
+  }
+}
+
 /** For files named after their content: when another writer got there first, its file stays. */
 export async function writeFileAtomic(path: string, data: Uint8Array | string): Promise<void> {
   const part = partOf(path);
+  let written = false;
   try {
     await writeFile(part, data);
+    written = true;
     await rename(part, path);
   } catch (e) {
     await rm(part, { force: true }).catch(() => {});
-    if (!existsSync(path)) throw e; // renaming over a file being read can fail on Windows: same content
+    // renaming over a file being read can fail on Windows: harmless when it is the same picture
+    if (!written || !sameFileThere(path, data)) throw e;
   }
 }
 
 export function writeFileAtomicSync(path: string, data: Uint8Array | string): void {
   const part = partOf(path);
+  let written = false;
   try {
     writeFileSync(part, data);
+    written = true;
     renameSync(part, path);
   } catch (e) {
     try {
@@ -33,6 +49,6 @@ export function writeFileAtomicSync(path: string, data: Uint8Array | string): vo
     } catch {
       /* nothing more to do */
     }
-    if (!existsSync(path)) throw e;
+    if (!written || !sameFileThere(path, data)) throw e;
   }
 }

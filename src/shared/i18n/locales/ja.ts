@@ -573,6 +573,7 @@ const messages: Catalog = {
   "upd.githubStatus": "GitHub の応答：{status}",
   "net.github": "GitHub に接続できません（オフライン？）",
   "upd.downloadFailed": "ダウンロードできませんでした：{error}。GitHub からダウンロードできます。",
+  "upd.unsigned": "ダウンロードしたバージョンには Chud Music の署名がないため、インストールしていません。GitHub からダウンロードできます。",
   "net.ytm": "YouTube Music に接続できません。インターネット接続を確認してください。",
   "yt.unexpected": "YouTube Music からの予期しない応答（{detail}）",
   "yt.expired": "結果の有効期限が切れました",

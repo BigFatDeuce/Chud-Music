@@ -42,6 +42,36 @@ const linksInside = () => win.evaluate(() => { const s = document.querySelector(
 const spectrumMoves = () => win.evaluate(async () => { const cv = document.querySelector('.spectrum canvas'); if (!cv?.offsetWidth) return 'hidden'; const a = cv.toDataURL(); await new Promise((r) => setTimeout(r, 400)); return cv.toDataURL() !== a ? 'animated' : 'static'; });
 const stage = () => win.evaluate(() => { const e = document.querySelector('.np-stage'); return e ? { view: e.dataset.view, text: e.innerText.trim(), h: Math.round(e.getBoundingClientRect().height), links: [...e.querySelectorAll('.np-card-links a')].map((a) => a.href) } : null; });
 
+// synced lyrics in the strip: every line shown is whole (wrapped, not cut with "…") and inside the strip
+const lyricsCut = () => win.evaluate(() => {
+  const s = document.querySelector('.np-stage');
+  if (!s || s.dataset.view !== 'synced') return null;
+  const box = s.getBoundingClientRect();
+  return [...s.querySelectorAll('.np-lyric:not(.empty)')].filter((l) => l.offsetParent).filter((l) => {
+    const r = l.getBoundingClientRect();
+    return l.scrollHeight > l.clientHeight + 1 || l.scrollWidth > l.clientWidth + 1 || r.bottom > box.bottom + 1 || r.right > box.right + 1;
+  }).map((l) => l.textContent);
+});
+const lyricSizes = [];
+// the real lines, then long ones put in their place (the window is nudged by 1 px so the strip fits them again)
+const LONG = ['Then follow the leader right off the cliff and into the dark below us all', 'All your dreams are down the drain and buried under broken bones tonight', 'Buried under broken bones and everything we never said to anyone'];
+const noteLyrics = async (w, h) => {
+  const cut = await lyricsCut();
+  if (!cut) return;
+  const longOk = await win.evaluate((long) => {
+    const ls = [...document.querySelectorAll('.np-stage .np-lyric:not(.empty)')];
+    ls.forEach((l, i) => { l.textContent = long[i % long.length]; });
+    return ls.length > 0;
+  }, LONG);
+  await resize(w + 1, h);
+  await sleep(500);
+  const cutLong = longOk ? await lyricsCut() : [];
+  if (w === 640 || w === 1320) await win.screenshot({ path: join(shots, `dock-07-lyrics-${w}.png`) });
+  const on = await win.evaluate(() => { const e = document.querySelector('.np-stage .np-lyric.on'); return e ? { shown: !!e.offsetParent, text: e.textContent } : null; });
+  const bad = [...cut, ...(cutLong ?? []), ...(on && on.shown ? [] : ['current line hidden'])];
+  lyricSizes.push(bad.length ? `${w}×${h}: ${bad.join(' | ')}` : '');
+  await resize(w, h);
+};
 try {
   ({ app, win } = await launch(profile));
   await resize(1320, 840);
@@ -87,6 +117,7 @@ try {
   const strip169 = await win.evaluate(() => { const s = document.querySelector('.np-stage').getBoundingClientRect(); const y = document.querySelector('.np-yt-slot').getBoundingClientRect(); return { w: Math.round(s.width), h: Math.round(s.height), beside: s.left >= y.right - 1 && s.top >= y.top - 1 }; });
   t.check('small 16/9 window: lyrics or card beside the player, with the 5 links', !!st && st.text.length > 20 && strip169.beside && strip169.h >= 100 && (await linksInside()) === 5, `${st?.view} ${JSON.stringify(strip169)}`);
   await win.screenshot({ path: join(shots, 'dock-06-169.png') });
+  await noteLyrics(960, 540);
 
   // narrow window (16/9 resized, portrait…)
   await resize(760, 900);
@@ -99,6 +130,15 @@ try {
   });
   t.check('panels above the bar follow its new height', panelsOk);
   await win.screenshot({ path: join(shots, 'dock-02-narrow.png') });
+  await noteLyrics(760, 900);
+  for (const [w, h] of [[640, 700], [820, 600], [1100, 700], [1320, 840]]) {
+    await resize(w, h);
+    await sleep(800);
+
+    await noteLyrics(w, h);
+  }
+  t.check('synced lyrics: whole lines at every size (none cut, none outside the strip)', lyricSizes.length > 0 && lyricSizes.every((x) => !x),
+    lyricSizes.length ? `${lyricSizes.length} sizes${lyricSizes.some(Boolean) ? ': ' + lyricSizes.filter(Boolean).join(' ; ') : ''}` : 'no synced lyrics found for this track (LRCLIB)');
 
   // every window size: wherever the player is (sidebar or bar), never under YouTube's 200 × 200
   const small = [];

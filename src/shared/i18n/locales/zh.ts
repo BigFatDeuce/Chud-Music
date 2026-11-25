@@ -573,6 +573,7 @@ const messages: Catalog = {
   "upd.githubStatus": "GitHub 返回 {status}",
   "net.github": "无法连接 GitHub（离线？）",
   "upd.downloadFailed": "无法下载：{error}。你可以从 GitHub 下载。",
+  "upd.unsigned": "下载的版本没有 Chud Music 的签名，未安装。你可以从 GitHub 下载。",
   "net.ytm": "无法连接 YouTube Music。请检查网络连接。",
   "yt.unexpected": "YouTube Music 返回了意外的响应（{detail}）",
   "yt.expired": "结果已过期",

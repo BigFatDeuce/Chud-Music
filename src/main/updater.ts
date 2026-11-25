@@ -1,7 +1,8 @@
 import { app, shell } from 'electron';
 import { existsSync, readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { basename, dirname, join } from 'node:path';
 import electronUpdater from 'electron-updater';
+import { sha512File, UPDATE_PUBLIC_KEY, verifyUpdate } from './update-signature';
 import type { UpdateStatus } from '@shared/types';
 import { updateMachine, updateState, type UpdateEvent, type UpdatePhase } from '@shared/machines';
 import { tr } from '@shared/i18n';
@@ -9,7 +10,8 @@ import { log } from './log';
 
 // Updates published as GitHub releases of BigFatDeuce/Chud-Music (installers only, no code).
 //  • In-app: electron-updater reads latest.yml from the latest release, downloads the
-//    installer (SHA-512 checked) and runs it on restart. User data lives in %APPDATA%, outside
+//    installer (SHA-512 checked), checks our own signature of it (update-signature.ts) and runs
+//    it on restart. User data lives in %APPDATA%, outside
 //    the install folder: an update never touches it (and the installer never deletes it).
 //  • Fallback (development build, Linux package without AppImage, or a release published
 //    without latest.yml): the GitHub API tells whether a newer version exists, and the button
@@ -88,6 +90,7 @@ export function checkForUpdates(): Promise<void> {
           const r = await autoUpdater.checkForUpdates();
           const v = r?.updateInfo.version;
           if (v && newer(v, status.current)) {
+            feedFile = basename(new URL(r.updateInfo.files[0]?.url ?? r.updateInfo.path, 'https://x/').pathname);
             const notes = typeof r.updateInfo.releaseNotes === 'string' ? r.updateInfo.releaseNotes : (r.updateInfo.releaseNotes?.map((n) => n.note).join('\n') ?? null);
             return void go('FOUND', { version: v, notes, inApp: true, checkedAt: Date.now() });
           }
@@ -106,6 +109,23 @@ export function checkForUpdates(): Promise<void> {
   return checking;
 }
 
+// The installer named by the release feed when the update was found ("Chud-Music-Setup-1.5.0.exe"):
+// its signature is published beside it as "<name>.sig".
+let feedFile: string | null = null;
+// The isolated test profile may check against a test key (tests/e2e/updates.mjs); never otherwise.
+const publicKey = () => (process.env.CHUD_USER_DATA && process.env.CHUD_UPDATE_PUBKEY) || UPDATE_PUBLIC_KEY;
+const signatureUrl = (version: string, file: string): string =>
+  process.env.CHUD_UPDATE_FEED ? new URL(`${encodeURIComponent(file)}.sig`, process.env.CHUD_UPDATE_FEED).href : `${RELEASES_URL}/download/v${encodeURIComponent(version)}/${encodeURIComponent(file)}.sig`;
+
+/** Null when the downloaded installer carries our signature, else why not (for the log). */
+async function signatureProblem(downloaded: string | undefined, version: string | null): Promise<string | null> {
+  if (!downloaded || !version || !feedFile) return 'nothing to check';
+  const res = await fetch(signatureUrl(version, feedFile), { headers: { 'User-Agent': 'Chud-Music-updater' }, signal: AbortSignal.timeout(20_000) });
+  if (!res.ok) return `no signature (${res.status})`;
+  const sig = (await res.text()).slice(0, 200);
+  return verifyUpdate(version, await sha512File(downloaded), sig, publicKey()) ? null : 'wrong signature';
+}
+
 /** Downloads the update in-app, or opens the releases page when that is not possible. */
 export async function downloadUpdate(): Promise<void> {
   if (!status.inApp) {
@@ -115,11 +135,27 @@ export async function downloadUpdate(): Promise<void> {
   // one download at a time, and only of an update that was found (a notification's button can
   // be clicked after the state has moved on)
   if (!go('DOWNLOAD', { progress: 0, error: null })) return;
+  let files: string[];
   try {
-    await autoUpdater.downloadUpdate();
+    files = await autoUpdater.downloadUpdate();
   } catch (e) {
     go('DOWNLOAD_FAILED', { error: tr('upd.downloadFailed', { error: e instanceof Error ? e.message : String(e) }), inApp: false });
+    return;
   }
+  // SHA-512 checked by electron-updater against latest.yml; now our own signature, before the
+  // update is offered for install. Refused: only the releases page is offered (manual download).
+  let problem: string | null;
+  try {
+    problem = await signatureProblem(files.find((f) => !f.endsWith('.blockmap')), status.version);
+  } catch (e) {
+    problem = e instanceof Error ? e.message : String(e);
+  }
+  if (problem) {
+    log('warn', 'updates', `update ${status.version} refused: ${problem}`);
+    go('DOWNLOAD_FAILED', { error: tr('upd.unsigned'), inApp: false });
+    return;
+  }
+  go('DOWNLOADED', { progress: 100 });
 }
 
 /** Quits, runs the installer (same folder, data untouched) and restarts Chud Music. */
@@ -146,7 +182,7 @@ export function initUpdater(onStatus: (s: UpdateStatus) => void, autoCheck: bool
   // would be thrown in the main process
   autoUpdater.on('error', (e) => log('warn', 'updates', e instanceof Error ? e.message : String(e)));
   autoUpdater.on('download-progress', (p) => go('PROGRESS', { progress: Math.round(p.percent) }));
-  autoUpdater.on('update-downloaded', () => go('DOWNLOADED', { progress: 100 }));
+  // the download ends in downloadUpdate(), once the signature is checked (not on 'update-downloaded')
   setAutoCheck(autoCheck, 8000);
 }
 

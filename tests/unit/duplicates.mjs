@@ -82,5 +82,15 @@ check('every entry taken out is within 3 s of the copy that stays', (() => { con
   check('an entry is never listed twice (a repeated track that loses to a better copy)', out.length === new Set(out).size && out.length === 2, out.map((t) => t.entryId).join());
 }
 
+// the same track whose entries carry different titles, artists or durations (saved at different times)
+{
+  const a = yt('same', 'Old title', 'Band', 200);
+  const b = { ...yt('same', 'New title (Remastered)', 'Other name', 260), entryId: 901 };
+  check('the same track with different metadata is still a duplicate', duplicateEntries([a, b]).map((t) => t.entryId).join() === '901', duplicateEntries([a, b]).map((t) => t.entryId).join());
+  const c = { ...local('k.flac', 'Song', 'Band', 200, 900, 'FLAC'), entryId: 902 };
+  const c2 = { ...c, title: 'Song (Live)', entryId: 903 };
+  check('… and it still counts with its first entry against the other copies', gone([mp3low, c, c2]).sort().join() === 'a/song-128.mp3,k.flac', gone([mp3low, c, c2]).join());
+}
+
 console.log(`\n[duplicates] ${count - failed}/${count} checks passed`);
 process.exit(failed ? 1 : 0);

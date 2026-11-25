@@ -58,24 +58,21 @@ export function qualityRank(t: DupTrack): number {
  */
 export function duplicateEntries<T extends DupTrack>(tracks: T[]): T[] {
   const order = new Map<T, number>();
-  // by title + artist + kind, then by track: the entries of each track, in playlist order
-  const songs = new Map<string, Map<string, T[]>>();
+  const out: T[] = [];
+  // 1. the same track again is always a duplicate, even when its entries carry different titles
+  //    or artists (an entry saved before its tags changed…): its first entry stands for it
+  const seen = new Set<string>();
+  // the first entry of each track, by title + artist + kind, in playlist order
+  const songs = new Map<string, T[]>();
   tracks.forEach((t, i) => {
     order.set(t, i);
+    if (seen.has(t.id)) return void out.push(t);
+    seen.add(t.id);
     const key = `${fold(t.title)}\u0000${fold(t.artist ?? '')}\u0000${isVideoFile(t) ? 'video' : 'audio'}`;
-    const byId = songs.get(key) ?? new Map<string, T[]>();
-    songs.set(key, byId);
-    byId.set(t.id, [...(byId.get(t.id) ?? []), t]);
+    songs.set(key, [...(songs.get(key) ?? []), t]);
   });
-  const out: T[] = [];
   const known = (t: T) => typeof t.durationSec === 'number' && Number.isFinite(t.durationSec) && t.durationSec > 0;
-  for (const byId of songs.values()) {
-    // 1. the same track again is always a duplicate: its first entry stands for it
-    const firsts: T[] = [];
-    for (const entries of byId.values()) {
-      firsts.push(entries[0]!);
-      out.push(...entries.slice(1));
-    }
+  for (const firsts of songs.values()) {
     // 2. different tracks are copies of one song only when ALL their durations lie within 3 s:
     //    sorted by duration, each group spans 3 s from its shortest track, so 180, 183 and 186 s
     //    are not chained into one song, and the playlist order changes nothing. A track whose

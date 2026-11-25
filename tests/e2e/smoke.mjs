@@ -19,7 +19,7 @@ try {
   await win.waitForSelector(`.tab.active >> text=${OPENED}`, { timeout: 10000 });
   await sleep(2500);
   t.check('launch file opens in "Fichiers ouverts"', (await filesTabs()) === 1 && (await rowCount()) === 1);
-  t.check('launch file plays automatically', (await npTitle(win)) === 'Minuit Chrome' && (await elapsed(win)) >= 1, `t=${await elapsed(win)}s`);
+  t.check('launch file plays automatically', (await npTitle(win)) === 'Minuit Chrome' && (await elapsed(win)) >= 1, `${await npTitle(win)}, badges: ${(await win.locator('.np-badges').allInnerTexts()).join(' ')}, t=${await elapsed(win)}s`);
   t.check('metadata + cover read', (await win.locator('.np-artist').innerText()).includes('Les Cassettes') && (await win.locator('.np-cover img').count()) === 1);
   await win.screenshot({ path: join(shots, '01-launch-file.png') });
 
@@ -44,7 +44,7 @@ try {
   // 4 — ALAC goes through FFmpeg
   await win.locator('.tl-row:has-text("Verre Bleu")').locator('.t-title').dblclick();
   await sleep(2500);
-  t.check('ALAC plays through FFmpeg fallback', (await npTitle(win)) === 'Verre Bleu' && (await win.locator('.np-badges >> text=FFmpeg').count()) === 1 && (await elapsed(win)) >= 1, `t=${await elapsed(win)}s`);
+  t.check('ALAC plays through FFmpeg fallback', (await npTitle(win)) === 'Verre Bleu' && (await win.locator('.np-badges >> text=FFmpeg').count()) === 1 && (await elapsed(win)) >= 1, `${await npTitle(win)}, badges: ${(await win.locator('.np-badges').allInnerTexts()).join(' ')}, t=${await elapsed(win)}s`);
 
   // 5 — the same file opened again is not duplicated
   await secondInstance(profile, f('01 - Minuit Chrome.mp3'));
