@@ -1,5 +1,6 @@
 import { nativeImage, protocol } from 'electron';
-import { createReadStream, existsSync, writeFileSync } from 'node:fs';
+import { createReadStream, existsSync } from 'node:fs';
+import { writeFileAtomicSync } from './atomic-write';
 import { stat } from 'node:fs/promises';
 import { basename, extname, join, resolve, sep } from 'node:path';
 import { Readable } from 'node:stream';
@@ -7,6 +8,7 @@ import { cacheDir, playlistCoversDir } from './paths';
 import { testOffline } from './netpath';
 import { serve } from './radio-shift';
 import { ytSchemePrivilege } from './yt-player';
+import { parseRange } from '@shared/http-range';
 
 // chud-media://file/<encoded path>  — audio files, with Range support (needed for seeking)
 // chud-media://cover/<name>         — cover art extracted into the cache
@@ -57,7 +59,17 @@ const noThumb = new Set<string>(); // originals already small enough (or unreada
 const thumbQueue = new Map<string, { path: string; size: number }>();
 let thumbBusy = false;
 
-const thumbPath = (path: string, size: number) => join(cacheDir('thumbs'), `${size}-${basename(path).replace(/\.\w+$/, '')}.jpg`);
+// Covers and playlist pictures have their own names in the thumbnail folder ('pl-' for the latter),
+// so a small copy of one can never be served for the other.
+const stemOf = (name: string) => basename(name).replace(/\.\w+$/, '');
+const thumbPath = (path: string, size: number, playlist: boolean) => join(cacheDir('thumbs'), `${size}-${playlist ? 'pl-' : ''}${stemOf(path)}.jpg`);
+
+/** Whether this file of the thumbnail folder is a small copy of that playlist picture (also with
+ *  the names used before 1.5, without 'pl-'). */
+export function isPlaylistThumb(file: string, picture: string): boolean {
+  const m = /^\d+-(.+)$/.exec(file);
+  return !!m && (m[1] === `pl-${stemOf(picture)}.jpg` || m[1] === `${stemOf(picture)}.jpg`);
+}
 
 function makeThumb(path: string, size: number, out: string): void {
   try {
@@ -66,7 +78,7 @@ function makeThumb(path: string, size: number, out: string): void {
       noThumb.add(out);
       return;
     }
-    writeFileSync(out, img.resize({ width: size, quality: 'good' }).toJPEG(85));
+    writeFileAtomicSync(out, img.resize({ width: size, quality: 'good' }).toJPEG(85));
     thumbReady.add(out);
   } catch {
     noThumb.add(out);
@@ -88,9 +100,9 @@ function pumpThumbs(): void {
 }
 
 /** The small copy if it exists; otherwise null (serve the original) and the copy is queued. */
-function thumbnail(path: string, size: number): string | null {
+function thumbnail(path: string, size: number, playlist: boolean): string | null {
   if (!/\.(jpe?g|png)$/i.test(path)) return null;
-  const out = thumbPath(path, size);
+  const out = thumbPath(path, size, playlist);
   if (thumbReady.has(out)) return out;
   if (noThumb.has(out)) return null;
   if (existsSync(out)) {
@@ -113,7 +125,12 @@ export function forgetThumbs(): void {
 export function handleProtocol(): void {
   protocol.handle(SCHEME, async (req) => {
     const url = new URL(req.url);
-    const name = decodeURIComponent(url.pathname.slice(1));
+    let name: string;
+    try {
+      name = decodeURIComponent(url.pathname.slice(1));
+    } catch {
+      return new Response(null, { status: 400 }); // a broken %-escape
+    }
     let path: string;
     if (url.host === 'cover' || url.host === 'playlist-cover') {
       const dir = url.host === 'cover' ? cacheDir('covers') : playlistCoversDir();
@@ -121,7 +138,7 @@ export function handleProtocol(): void {
       if (!resolve(path).startsWith(resolve(dir) + sep)) return new Response(null, { status: 403 });
       // ?s=<px>: a small copy, made once (grids of covers would otherwise decode full-size images)
       const s = Number(url.searchParams.get('s'));
-      if (s >= 32 && s <= 1024) path = thumbnail(path, Math.round(s)) ?? path;
+      if (s >= 32 && s <= 1024) path = thumbnail(path, Math.round(s), url.host === 'playlist-cover') ?? path;
     } else if (url.host === 'radio') {
       // live radio relayed (CORS for the audio graph, ICY titles read on the way)
       // (one connection per station, kept in memory for the time shift: radio-shift.ts)
@@ -148,14 +165,14 @@ export function handleProtocol(): void {
       'Accept-Ranges': 'bytes',
       'Access-Control-Allow-Origin': '*', // lets Web Audio read the samples (EQ, visualiser)
     };
-    const m = /bytes=(\d*)-(\d*)/.exec(req.headers.get('range') ?? '');
-    if (!m) {
+    // one range: 206; nothing of the file in it: 416; several, reversed or broken: the whole file
+    const range = parseRange(req.headers.get('range'), size);
+    if (range.kind === 'full') {
       headers['Content-Length'] = String(size);
       return new Response(Readable.toWeb(createReadStream(path)) as ReadableStream, { status: 200, headers });
     }
-    const start = m[1] ? Number(m[1]) : Math.max(0, size - Number(m[2]));
-    const end = m[1] && m[2] ? Math.min(Number(m[2]), size - 1) : size - 1;
-    if (start >= size) return new Response(null, { status: 416, headers: { 'Content-Range': `bytes */${size}` } });
+    if (range.kind === 'unsatisfiable') return new Response(null, { status: 416, headers: { 'Content-Range': `bytes */${size}` } });
+    const { start, end } = range;
     headers['Content-Range'] = `bytes ${start}-${end}/${size}`;
     headers['Content-Length'] = String(end - start + 1);
     return new Response(Readable.toWeb(createReadStream(path, { start, end })) as ReadableStream, { status: 206, headers });

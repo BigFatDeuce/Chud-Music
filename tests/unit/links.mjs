@@ -10,7 +10,7 @@ const src = readFileSync(new URL('../../src/shared/links.ts', import.meta.url), 
 const dir = mkdtempSync(join(tmpdir(), 'chud-links-'));
 const file = join(dir, 'links.mjs');
 writeFileSync(file, stripTypeScriptTypes(src));
-const { parseMusicLink } = await import(pathToFileURL(file).href);
+const { parseMusicLink, m3uVideoId } = await import(pathToFileURL(file).href);
 rmSync(dir, { recursive: true, force: true });
 
 const cases = [
@@ -30,6 +30,12 @@ const cases = [
   ['https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M', { provider: 'spotify', kind: 'playlist', id: '37i9dQZF1DXcBWIGoYBM5M' }],
   ['spotify:artist:4tZwfgrHOc3mvqYlEYSvVi', { provider: 'spotify', kind: 'artist', id: '4tZwfgrHOc3mvqYlEYSvVi' }],
   ['  https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC  ', { provider: 'spotify', kind: 'track', id: '4uLU6hMCjMI75M1A2tKUQC' }],
+  // a repeated identity parameter that contradicts itself is not a link (Chud Music
+  // More read the last value, this app the first: they must agree, so neither is guessed)
+  ['https://www.youtube.com/watch?v=AAAAAAAAAAA&v=BBBBBBBBBBB', null],
+  ['https://www.youtube.com/watch?v=dQw4w9WgXcQ&v=dQw4w9WgXcQ', { provider: 'youtube', kind: 'video', id: 'dQw4w9WgXcQ' }],
+  ['https://www.youtube.com/playlist?list=PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI&list=PLAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', null],
+  ['https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI&v=AAAAAAAAAAA', null],
   // not links: searched as text
   ['daft punk', null],
   ['one more time', null],
@@ -41,6 +47,10 @@ const cases = [
   ['ftp://youtube.com/watch?v=dQw4w9WgXcQ', null],
 ];
 
+// the corpus shared with Chud Music More: both apps must read these links the same way
+const corpus = JSON.parse(readFileSync(new URL('./links-corpus.json', import.meta.url), 'utf8'));
+for (const c of corpus.cases) cases.push([c.input, c.expect]);
+
 let failed = 0;
 for (const [input, want] of cases) {
   const got = parseMusicLink(input);
@@ -48,5 +58,29 @@ for (const [input, want] of cases) {
   if (!ok) failed++;
   console.log(`${ok ? 'PASS' : 'FAIL'}  ${JSON.stringify(input)}${ok ? '' : ` — got ${JSON.stringify(got)}`}`);
 }
+// M3U import (main/playlists.ts): each line is read like a pasted link, not searched for a pattern
+// anywhere in it as before (the old pattern is kept here to show the difference)
+const oldM3u = (line) => {
+  const m = /music\.youtube\.com\/watch\?v=([\w-]{11})|youtu(?:\.be\/|be\.com\/watch\?v=)([\w-]{11})/.exec(line);
+  return m ? m[1] ?? m[2] : null;
+};
+const m3u = [
+  ['https://music.youtube.com/watch?v=dQw4w9WgXcQ', 'dQw4w9WgXcQ', 'dQw4w9WgXcQ'], // what Chud Music writes
+  ['https://youtu.be/dQw4w9WgXcQ', 'dQw4w9WgXcQ', 'dQw4w9WgXcQ'],
+  ['https://www.youtube.com/watch?v=dQw4w9WgXcQ&list=PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI', 'dQw4w9WgXcQ', 'dQw4w9WgXcQ'],
+  ['https://www.youtube.com/watch?feature=share&v=dQw4w9WgXcQ', 'dQw4w9WgXcQ', null], // lost before
+  ['https://example.com/go?to=music.youtube.com/watch?v=dQw4w9WgXcQ', null, 'dQw4w9WgXcQ'], // another site, taken before
+  ['https://www.youtube.com/watch?v=AAAAAAAAAAA&v=BBBBBBBBBBB', null, 'AAAAAAAAAAA'],
+  ['Music/Album/01 - Track.mp3', null, null],
+  ['https://www.youtube.com/playlist?list=PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI', null, null],
+];
+for (const [line, want, before] of m3u) {
+  const got = m3uVideoId(line);
+  const ok = got === want && oldM3u(line) === before;
+  if (!ok) failed++;
+  cases.push([line, want]);
+  console.log(`${ok ? 'PASS' : 'FAIL'}  M3U line ${JSON.stringify(line)} → ${want}${before !== want ? ` (before: ${before})` : ''}${ok ? '' : ` — got ${got}`}`);
+}
+
 console.log(`\n[links-unit] ${cases.length - failed}/${cases.length} checks passed`);
 process.exit(failed ? 1 : 0);

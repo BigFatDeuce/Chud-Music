@@ -1,6 +1,7 @@
 import { net } from 'electron';
 import { createHash } from 'node:crypto';
 import { existsSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { writeFileAtomicSync } from './atomic-write';
 import { join } from 'node:path';
 import type { CoverStatus } from '@shared/types';
 import { coversMachine, coversRunning, type CoversEvent, type CoversPhase } from '@shared/machines';
@@ -84,7 +85,7 @@ async function download(url: string): Promise<string | null> {
   if (!res.ok || !(res.headers.get('content-type') ?? '').startsWith('image/')) return null;
   const buf = Buffer.from(await res.arrayBuffer());
   if (!buf.length || buf.length > 8 * 1024 * 1024) return null;
-  writeFileSync(out, buf);
+  writeFileAtomicSync(out, buf);
   return name;
 }
 

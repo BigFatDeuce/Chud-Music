@@ -2,8 +2,10 @@
 // Nothing is imported: tests/unit/duplicates.mjs loads this file as it is, without the app.
 //
 // Two entries are the same song when they are the same track, or have the same title and artist
-// (accents and case aside) and durations within 3 s — the same song on several albums of an
-// artist, the local file and its YouTube Music twin…
+// (accents and case aside) and known durations within 3 s — the same song on several albums of an
+// artist, the local file and its YouTube Music twin… Copies form a group only when all of their
+// durations lie within 3 s (no chain of near durations), and a track of unknown duration is only
+// the duplicate of itself. Only playlist entries are taken out, after asking; never a file.
 //
 // Of the copies of a song, the BEST one stays (not the first one found):
 //   1. a lossless file (FLAC, ALAC, WAV, AIFF, WavPack, APE, TTA, DSD)
@@ -55,25 +57,41 @@ export function qualityRank(t: DupTrack): number {
  * The same track twice is a duplicate whatever its durations.
  */
 export function duplicateEntries<T extends DupTrack>(tracks: T[]): T[] {
-  // songs met so far, by title + artist + kind: each is the list of its copies
-  const songs = new Map<string, T[][]>();
   const order = new Map<T, number>();
+  // by title + artist + kind, then by track: the entries of each track, in playlist order
+  const songs = new Map<string, Map<string, T[]>>();
   tracks.forEach((t, i) => {
     order.set(t, i);
     const key = `${fold(t.title)}\u0000${fold(t.artist ?? '')}\u0000${isVideoFile(t) ? 'video' : 'audio'}`;
-    const list = songs.get(key) ?? [];
-    if (!songs.has(key)) songs.set(key, list);
-    const copies = list.find((c) => c.some((o) => o.id === t.id || !o.durationSec || !t.durationSec || Math.abs(o.durationSec - t.durationSec) <= 3));
-    if (copies) copies.push(t);
-    else list.push([t]);
+    const byId = songs.get(key) ?? new Map<string, T[]>();
+    songs.set(key, byId);
+    byId.set(t.id, [...(byId.get(t.id) ?? []), t]);
   });
   const out: T[] = [];
-  for (const list of songs.values()) {
-    for (const copies of list) {
+  const known = (t: T) => typeof t.durationSec === 'number' && Number.isFinite(t.durationSec) && t.durationSec > 0;
+  for (const byId of songs.values()) {
+    // 1. the same track again is always a duplicate: its first entry stands for it
+    const firsts: T[] = [];
+    for (const entries of byId.values()) {
+      firsts.push(entries[0]!);
+      out.push(...entries.slice(1));
+    }
+    // 2. different tracks are copies of one song only when ALL their durations lie within 3 s:
+    //    sorted by duration, each group spans 3 s from its shortest track, so 180, 183 and 186 s
+    //    are not chained into one song, and the playlist order changes nothing. A track whose
+    //    duration is unknown is told apart from every other one (it cannot be checked).
+    const timed = firsts.filter(known).sort((a, b) => a.durationSec! - b.durationSec! || order.get(a)! - order.get(b)!);
+    const groups: T[][] = [];
+    for (const t of timed) {
+      const g = groups[groups.length - 1];
+      if (g && t.durationSec! - g[0]!.durationSec! <= 3) g.push(t);
+      else groups.push([t]);
+    }
+    for (const copies of groups) {
       if (copies.length < 2) continue;
-      // the best copy stays; with the same quality, the first one (the sort is stable)
-      const keep = [...copies].sort((a, b) => qualityRank(b) - qualityRank(a))[0]!;
-      out.push(...copies.filter((c) => c !== keep));
+      // the best copy stays; with the same quality, the first one in the playlist
+      const keep = [...copies].sort((a, b) => qualityRank(b) - qualityRank(a) || order.get(a)! - order.get(b)!)[0]!;
+      for (const c of copies) if (c !== keep) out.push(c); // its other entries are already out (1.)
     }
   }
   return out.sort((a, b) => order.get(a)! - order.get(b)!);

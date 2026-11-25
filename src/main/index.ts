@@ -418,7 +418,9 @@ function registerIpc(launch: LaunchQueue, getWin: () => BrowserWindow | null): v
   ipcMain.handle('playlists:create', (_e, name: string, tracks?: Track[]) => playlists.create(name, tracks));
   ipcMain.handle('playlists:rename', (_e, id: number, name: string) => playlists.rename(id, name));
   ipcMain.handle('playlists:set-cover', async (_e, id: number, path?: string) => {
-    let p = path;
+    // a path from the page itself only in the tests' isolated profile: otherwise the picture is
+    // always one the person chose in the dialog (the page cannot have any file of the disk copied)
+    let p = process.env.CHUD_USER_DATA ? path : undefined;
     if (!p) {
       const w = getWin();
       const opts: Electron.OpenDialogOptions = { title: tr('main.pickImage'), properties: ['openFile'], filters: [{ name: tr('main.images'), extensions: [...playlists.COVER_EXTENSIONS] }] };

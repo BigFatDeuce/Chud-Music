@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
-import { readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { readFile, stat, writeFile } from 'node:fs/promises';
+import { readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { readFile, stat } from 'node:fs/promises';
+import { writeFileAtomic } from './atomic-write';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
 import type { PlaylistDetail, PlaylistSummary, Track } from '@shared/types';
 import { cleanSpec, smartQuery, type SmartSpec } from '@shared/smart';
@@ -8,9 +9,10 @@ import { fold, getDb, tx, sql } from './db';
 import { readFileMeta } from './metadata';
 import { log } from './log';
 import { cacheDir, playlistCoversDir } from './paths';
-import { playlistCoverUrl } from './protocol';
+import { forgetThumbs, isPlaylistThumb, playlistCoverUrl } from './protocol';
 import { ensureTrackRow, metaToTrack, rowToTrack, TRACK_COLUMNS, type TrackRow } from './tracks';
 import { tr } from '@shared/i18n';
+import { m3uVideoId } from '@shared/links';
 import { norm } from './youtube';
 
 // Saved playlists. Only explicit user actions change them: opening files, playing, or
@@ -222,7 +224,7 @@ export async function setCover(id: number, path: string): Promise<void> {
   const type = imageType(data);
   if (!type) throw new Error(tr('main.notAnImage'));
   const name = `${id}-${createHash('sha1').update(data).digest('hex').slice(0, 16)}.${type}`;
-  await writeFile(join(playlistCoversDir(), name), data);
+  await writeFileAtomic(join(playlistCoversDir(), name), data);
   sql('UPDATE playlists SET cover = ?, updated_at = ? WHERE id = ?').run(name, Date.now(), id);
   if (row.cover && row.cover !== name) dropCoverFile(row.cover);
   emit(id);
@@ -238,7 +240,16 @@ export function clearCover(id: number): void {
 
 /** Only ever a copy Chud Music made, in its own folder. */
 function dropCoverFile(name: string): void {
-  if (/^\d+-[0-9a-f]{16}\.\w+$/.test(name)) rmSync(join(playlistCoversDir(), name), { force: true });
+  if (!/^\d+-[0-9a-f]{16}\.\w+$/.test(name)) return;
+  rmSync(join(playlistCoversDir(), name), { force: true });
+  // and its small copies, which nothing else would ever remove
+  try {
+    const thumbs = cacheDir('thumbs');
+    for (const f of readdirSync(thumbs)) if (isPlaylistThumb(f, name)) rmSync(join(thumbs, f), { force: true });
+  } catch {
+    /* no thumbnail folder yet, or a copy in use: harmless, nothing links to it any more */
+  }
+  forgetThumbs();
 }
 
 export function rename(id: number, name: string): void {
@@ -463,9 +474,10 @@ export async function importFile(file: string): Promise<number> {
   for (const raw of text.split(/\r?\n/)) {
     const line = raw.trim();
     if (!line || line.startsWith('#')) continue;
-    const yt = /music\.youtube\.com\/watch\?v=([\w-]{11})|youtu(?:\.be\/|be\.com\/watch\?v=)([\w-]{11})/.exec(line);
-    if (yt) {
-      tracks.push({ id: '', source: 'youtube', videoId: yt[1] ?? yt[2], title: tr('main.ytTrack'), artist: null, album: null, durationSec: null, coverUrl: null, available: true });
+    // the same reading as a pasted link (shared/links.ts): not a pattern found anywhere in the line
+    const videoId = m3uVideoId(line);
+    if (videoId) {
+      tracks.push({ id: '', source: 'youtube', videoId, title: tr('main.ytTrack'), artist: null, album: null, durationSec: null, coverUrl: null, available: true });
       continue;
     }
     const path = isAbsolute(line) ? line : resolve(base, line);

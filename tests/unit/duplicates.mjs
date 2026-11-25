@@ -54,5 +54,33 @@ const mixed = [mp3low, local('other.mp3', 'Other', 'Band', 100, 128), mp3high, f
 check('the entries to take out come in playlist order', duplicateEntries(mixed).map((t) => t.entryId).join() === [mp3low.entryId, mp3high.entryId].join());
 check('nothing to take out of a playlist without copies', duplicateEntries([mp3low, local('o.mp3', 'Other', 'Band', 100, 128), video]).length === 0 && duplicateEntries([]).length === 0);
 
+// Copies are grouped only when ALL their known durations lie within 3 s (no chain
+// 180 → 183 → 186), an unknown duration never joins another track, and the playlist order does not
+// change how many entries are taken out.
+const d = (path, dur, rate = 192) => local(path, 'Same', 'Test', dur, rate, 'FLAC');
+const gone3 = (...l) => gone(l);
+check('an unknown duration does not bridge 180 s and 300 s', gone3(d('a.flac', 180), d('z.flac', null), d('c.flac', 300)).length === 0, gone3(d('a.flac', 180), d('z.flac', null), d('c.flac', 300)).join());
+check('two different tracks without a duration are not taken for each other', gone3(d('x.flac', null), d('y.flac', null)).length === 0);
+check('the same track twice, without a duration, is still a duplicate', duplicateEntries([d('x.flac', null), { ...d('x.flac', null), entryId: 501 }]).map((t) => t.entryId).join() === '501');
+check('no chain: 180, 183 and 186 s are not one song', !gone3(d('a.flac', 180), d('b.flac', 183), d('e.flac', 186)).includes('e.flac'), gone3(d('a.flac', 180), d('b.flac', 183), d('e.flac', 186)).join());
+const perms = (a) => (a.length < 2 ? [a] : a.flatMap((x, i) => perms([...a.slice(0, i), ...a.slice(i + 1)]).map((r) => [x, ...r])));
+const near = (a, b) => a.id === b.id || (a.durationSec != null && b.durationSec != null && Math.abs(a.durationSec - b.durationSec) <= 3);
+// every entry taken out has a kept copy of the same song within 3 s; the number taken out
+const sound = (list) => {
+  const out = new Set(duplicateEntries(list));
+  const kept = list.filter((t) => !out.has(t));
+  return [...out].every((r) => kept.some((k) => near(r, k))) ? out.size : -1;
+};
+const counts = perms([d('p.flac', 180), d('q.flac', 183), d('r.flac', 186), d('s.flac', 240)]).map(sound);
+check('whatever the playlist order: as many taken out, each one near a kept copy', counts.every((c) => c === counts[0] && c > 0), [...new Set(counts)].join());
+check('every entry taken out is within 3 s of the copy that stays', (() => { const l = [d('a.flac', 180, 100), d('b.flac', 183, 900), d('c.flac', 186, 100)]; return sound(l) >= 1; })());
+
+{
+  const a = d('twice.flac', 200, 128);
+  const l = [a, d('better.flac', 201, 900), { ...a, entryId: 777 }];
+  const out = duplicateEntries(l);
+  check('an entry is never listed twice (a repeated track that loses to a better copy)', out.length === new Set(out).size && out.length === 2, out.map((t) => t.entryId).join());
+}
+
 console.log(`\n[duplicates] ${count - failed}/${count} checks passed`);
 process.exit(failed ? 1 : 0);

@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
-import { stat, writeFile } from 'node:fs/promises';
+import { stat } from 'node:fs/promises';
+import { writeFileAtomic } from './atomic-write';
 import { guessFromFilename, localIdOf } from '@shared/filenames';
 import { basename, extname, join, resolve } from 'node:path';
 
@@ -57,7 +58,7 @@ export async function readFileMeta(path: string, coversDir: string): Promise<Fil
       // Content-addressed: every track of an album shares one cover file.
       coverName = `${createHash('sha1').update(pic.data).digest('hex').slice(0, 24)}.${pic.format.includes('png') ? 'png' : 'jpg'}`;
       const out = join(coversDir, coverName);
-      if (!(await stat(out).then(() => true, () => false))) await writeFile(out, pic.data);
+      if (!(await stat(out).then(() => true, () => false))) await writeFileAtomic(out, pic.data);
     }
     return {
       ...base,

@@ -12,6 +12,18 @@ const YT_HOSTS = /^(?:www\.|m\.|music\.)?youtube(?:-nocookie)?\.com$/i;
 const VIDEO = /^[\w-]{11}$/;
 const SPOTIFY_ID = /^[A-Za-z0-9]{22}$/;
 
+/**
+ * The YouTube video of one line of an M3U playlist, read like any pasted link (the same rules,
+ * the same shared corpus), or null for a line that is not a YouTube link (a local path…). A
+ * watch link inside a playlist gives its video: an M3U line is one track.
+ */
+export function m3uVideoId(line: string): string | null {
+  const link = parseMusicLink(line);
+  if (link?.provider !== 'youtube') return null;
+  if (link.kind === 'video') return link.id;
+  return link.kind === 'playlist' ? (link.videoId ?? null) : null;
+}
+
 /** The music link in this text (a URL or a spotify: URI), or null when it is not one. */
 export function parseMusicLink(input: string): MusicLink | null {
   const text = input.trim();
@@ -40,8 +52,15 @@ export function parseMusicLink(input: string): MusicLink | null {
     return id && VIDEO.test(id) ? { provider: 'youtube', kind: 'video', id } : null;
   }
   if (!YT_HOSTS.test(host)) return null;
-  const v = url.searchParams.get('v') ?? undefined;
-  const list = url.searchParams.get('list') ?? undefined;
+  // a parameter given twice with two values names two things: not a link (Chud Music More reads
+  // the links the same way; neither app guesses which one was meant)
+  const one = (name: string): string | undefined | null => {
+    const all = new Set(url.searchParams.getAll(name));
+    return all.size > 1 ? null : ([...all][0] ?? undefined);
+  };
+  const v = one('v');
+  const list = one('list');
+  if (v === null || list === null) return null;
   // a "radio" list (RD…) is generated around the video: the video is what was shared
   if (list && !/^RD/.test(list) && /^[\w-]{10,}$/.test(list)) return { provider: 'youtube', kind: 'playlist', id: list, videoId: v && VIDEO.test(v) ? v : undefined };
   if (v && VIDEO.test(v)) return { provider: 'youtube', kind: 'video', id: v };
